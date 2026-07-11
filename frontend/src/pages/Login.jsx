@@ -34,8 +34,8 @@ export default function Login() {
           <div className="w-16 h-16 gradient-header rounded-3xl flex items-center justify-center text-white shadow-md mb-4">
             <FileText size={32} />
           </div>
-          <h2 className="text-3xl font-extrabold text-white tracking-tight">ResumeFlow</h2>
-          <p className="text-purple-200 text-sm mt-1">AI-Powered Resume Analyzer</p>
+          <h2 className="text-3xl font-extrabold text-slate-800 tracking-tight">ResumeFlow</h2>
+          <p className="text-slate-550 text-sm mt-1 font-medium">AI-Powered Resume Analyzer</p>
         </div>
 
         {error && (
@@ -79,9 +79,9 @@ export default function Login() {
           </button>
         </form>
 
-        <div className="mt-8 text-center text-sm text-purple-100">
+        <div className="mt-8 text-center text-sm text-slate-500 font-medium">
           Don't have an account?{' '}
-          <Link to="/register" className="text-white font-extrabold hover:underline">
+          <Link to="/register" className="text-purple-600 font-extrabold hover:underline">
             Register here
           </Link>
         </div>
