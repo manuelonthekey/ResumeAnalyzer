@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import useAuthStore from './store/useAuthStore';
+
+// Components
+import AmbientGlow from './components/AmbientGlow';
 
 // Pages
 import Login from './pages/Login';
@@ -26,8 +29,14 @@ const PublicRoute = ({ children }) => {
 };
 
 function App() {
+  useEffect(() => {
+    // Permanently enforce dark mode
+    document.documentElement.classList.add('dark');
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
+      <AmbientGlow />
       <Router>
         <Routes>
           <Route 

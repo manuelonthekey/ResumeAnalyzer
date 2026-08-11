@@ -98,7 +98,7 @@ export default function Profile() {
         <div className="w-full flex items-center gap-4">
           <button 
             onClick={() => navigate('/dashboard')} 
-            className="p-3 bg-white hover:bg-violet-50 border border-violet-100 rounded-2xl transition-all text-violet-600 flex items-center justify-center btn-interactive shadow-sm"
+            className="p-3 bg-white dark:bg-[#100818] dark:text-gray-100 hover:bg-violet-50 border border-violet-100 rounded-2xl transition-all text-violet-600 flex items-center justify-center btn-interactive shadow-sm"
           >
             <ArrowLeft size={20} />
           </button>
@@ -113,7 +113,7 @@ export default function Profile() {
         <form onSubmit={handleSubmit} className="space-y-6">
           
           {/* Avatar Card */}
-          <div className="glass-card rounded-4xl p-6 shadow-sm border border-white/60 flex flex-col sm:flex-row items-center gap-6">
+          <div className="glass-card rounded-2xl p-6 shadow-sm border border-white/60 flex flex-col sm:flex-row items-center gap-6">
             <div className="relative group shrink-0">
               <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-white bg-primary-50 flex items-center justify-center shadow-md">
                 {formData.profile_picture ? (
@@ -128,7 +128,7 @@ export default function Profile() {
               </label>
             </div>
             <div className="text-center sm:text-left">
-              <h3 className="text-xl font-bold text-gray-800">{formData.name || 'User Name'}</h3>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">{formData.name || 'User Name'}</h3>
               <p className="text-gray-400 text-sm flex items-center gap-1.5 justify-center sm:justify-start mt-1">
                 <Mail size={14} /> {profile?.email}
               </p>
@@ -136,8 +136,8 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="glass-card rounded-4xl p-6 shadow-sm border border-white/60 space-y-4">
-            <h3 className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-2 mb-4">Personal Details</h3>
+          <div className="glass-card rounded-2xl p-6 shadow-sm border border-white/60 space-y-4">
+            <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 border-b border-gray-100 pb-2 mb-4">Personal Details</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -151,7 +151,7 @@ export default function Profile() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                    className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white text-gray-700 text-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 text-gray-700 dark:text-gray-300 text-sm"
                   />
                 </div>
               </div>
@@ -167,7 +167,7 @@ export default function Profile() {
                     placeholder="e.g. Frontend Engineer, Product Manager"
                     value={formData.preferred_roles}
                     onChange={(e) => setFormData(prev => ({ ...prev, preferred_roles: e.target.value }))}
-                    className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white text-gray-700 text-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 text-gray-700 dark:text-gray-300 text-sm"
                   />
                 </div>
               </div>
@@ -175,8 +175,8 @@ export default function Profile() {
           </div>
 
           {/* Socials & Portfolios */}
-          <div className="glass-card rounded-4xl p-6 shadow-sm border border-white/60 space-y-4">
-            <h3 className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-2 mb-4">Professional Links</h3>
+          <div className="glass-card rounded-2xl p-6 shadow-sm border border-white/60 space-y-4">
+            <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 border-b border-gray-100 pb-2 mb-4">Professional Links</h3>
 
             <div className="space-y-4">
               <div>
@@ -190,7 +190,7 @@ export default function Profile() {
                     placeholder="https://linkedin.com/in/username"
                     value={formData.linkedin_url}
                     onChange={(e) => setFormData(prev => ({ ...prev, linkedin_url: e.target.value }))}
-                    className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white text-gray-700 text-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 text-gray-700 dark:text-gray-300 text-sm"
                   />
                 </div>
               </div>
@@ -206,7 +206,7 @@ export default function Profile() {
                     placeholder="https://github.com/username"
                     value={formData.github_url}
                     onChange={(e) => setFormData(prev => ({ ...prev, github_url: e.target.value }))}
-                    className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white text-gray-700 text-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 text-gray-700 dark:text-gray-300 text-sm"
                   />
                 </div>
               </div>
@@ -222,7 +222,7 @@ export default function Profile() {
                     placeholder="https://myportfolio.com"
                     value={formData.portfolio_url}
                     onChange={(e) => setFormData(prev => ({ ...prev, portfolio_url: e.target.value }))}
-                    className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white text-gray-700 text-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 text-gray-700 dark:text-gray-300 text-sm"
                   />
                 </div>
               </div>
@@ -233,7 +233,7 @@ export default function Profile() {
           <button
             type="submit"
             disabled={updateProfileMutation.isPending}
-            className="w-full gradient-header text-white font-semibold py-4 rounded-3xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 btn-interactive"
+            className="w-full gradient-header text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 btn-interactive"
           >
             {updateProfileMutation.isPending ? (
               <>

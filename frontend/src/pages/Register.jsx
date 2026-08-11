@@ -32,10 +32,10 @@ export default function Register() {
     <div className="min-h-screen bg-transparent flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white/40 backdrop-blur-md rounded-5xl shadow-2xl p-8 border border-white/40">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 gradient-header rounded-3xl flex items-center justify-center text-white shadow-md mb-4">
+          <div className="w-16 h-16 gradient-header rounded-xl flex items-center justify-center text-white shadow-md mb-4">
             <FileText size={32} />
           </div>
-          <h2 className="text-3xl font-extrabold text-slate-800 tracking-tight">Join ResumeFlow</h2>
+          <h2 className="text-3xl font-extrabold text-slate-800 dark:text-slate-200 tracking-tight">Join ResumeFlow</h2>
           <p className="text-slate-550 text-sm mt-1 font-medium">Get started in seconds</p>
         </div>
 
@@ -53,7 +53,7 @@ export default function Register() {
               placeholder="Full name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 bg-white/95 border border-purple-100/60 rounded-3xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white transition-all text-slate-800 font-medium shadow-sm"
+              className="w-full pl-12 pr-4 py-3.5 bg-white/95 dark:bg-[#100818]/95 border border-purple-100/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 transition-all text-slate-800 dark:text-slate-200 font-medium shadow-sm"
               required
             />
           </div>
@@ -65,7 +65,7 @@ export default function Register() {
               placeholder="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 bg-white/95 border border-purple-100/60 rounded-3xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white transition-all text-slate-800 font-medium shadow-sm"
+              className="w-full pl-12 pr-4 py-3.5 bg-white/95 dark:bg-[#100818]/95 border border-purple-100/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 transition-all text-slate-800 dark:text-slate-200 font-medium shadow-sm"
               required
             />
           </div>
@@ -77,7 +77,7 @@ export default function Register() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 bg-white/95 border border-purple-100/60 rounded-3xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white transition-all text-slate-800 font-medium shadow-sm"
+              className="w-full pl-12 pr-4 py-3.5 bg-white/95 dark:bg-[#100818]/95 border border-purple-100/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 transition-all text-slate-800 dark:text-slate-200 font-medium shadow-sm"
               required
             />
           </div>
@@ -85,16 +85,16 @@ export default function Register() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full gradient-header text-white font-bold py-4 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 btn-interactive cursor-pointer"
+            className="w-full gradient-header text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 btn-interactive cursor-pointer"
           >
             {loading ? 'Creating account...' : 'Create Account'}
             <ArrowRight size={18} />
           </button>
         </form>
 
-        <div className="mt-8 text-center text-sm text-slate-500 font-medium">
+        <div className="mt-8 text-center text-sm text-slate-500 dark:text-slate-400 font-medium">
           Already have an account?{' '}
-          <Link to="/login" className="text-purple-600 font-extrabold hover:underline">
+          <Link to="/login" className="text-purple-600 dark:text-purple-400 font-extrabold hover:underline">
             Log In here
           </Link>
         </div>

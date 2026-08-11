@@ -143,7 +143,7 @@ export default function Dashboard() {
           <div className="flex items-center gap-4">
             <div 
               onClick={() => navigate('/profile')}
-              className="w-13 h-13 rounded-full overflow-hidden border-2 border-white cursor-pointer hover:scale-105 transition-all bg-purple-100 flex items-center justify-center shadow-md shrink-0"
+              className="w-13 h-13 rounded-full overflow-hidden border-2 border-white cursor-pointer hover:scale-105 transition-all bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center shadow-md shrink-0"
               title="Edit Profile"
             >
               {user?.profile_picture ? (
@@ -207,7 +207,7 @@ export default function Dashboard() {
 
         {/* Scores History Dropdown list */}
         {showScoresDropdown && (
-          <div className="absolute right-8 top-20 w-64 bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-purple-100 p-4 z-50 text-gray-800 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="absolute right-8 top-20 w-64 bg-white/95 dark:bg-[#100818]/95 backdrop-blur-md rounded-xl shadow-2xl border border-purple-100 p-4 z-50 text-gray-800 dark:text-gray-200 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
             <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Last 7 Sessions</h4>
             {interviewHistory.slice(0, 7).length === 0 ? (
               <p className="text-xs text-gray-400">No sessions completed yet.</p>
@@ -215,10 +215,10 @@ export default function Dashboard() {
               interviewHistory.slice(0, 7).map((session) => (
                 <div key={session.id} className="flex justify-between items-center py-1.5 border-b border-gray-50 last:border-b-0">
                   <div className="flex flex-col">
-                    <span className="text-xs font-bold text-gray-700 capitalize">{session.session_type}</span>
+                    <span className="text-xs font-bold text-gray-700 dark:text-gray-300 capitalize">{session.session_type}</span>
                     <span className="text-[10px] text-gray-400">{new Date(session.started_at).toLocaleDateString()}</span>
                   </div>
-                  <span className="text-[10px] font-black text-purple-600 bg-purple-50 border border-purple-100 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[10px] font-black text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 border border-purple-100 px-2.5 py-0.5 rounded-full">
                     {session.overall_score || 0}%
                   </span>
                 </div>
@@ -237,22 +237,22 @@ export default function Dashboard() {
           <div className="space-y-6">
             
             {/* Upload New Resume card */}
-            <div className="bg-purple-100/40 border border-purple-200/50 rounded-[36px] p-6 shadow-sm flex flex-col justify-between min-h-[220px]">
+            <div className="bg-purple-100/40 dark:bg-purple-900/20 border border-purple-200/50 rounded-2xl p-6 shadow-sm flex flex-col justify-between min-h-[220px]">
               <div className="flex justify-between items-start">
-                <div className="p-3.5 bg-purple-200 text-purple-700 rounded-2xl">
+                <div className="p-3.5 bg-purple-200 text-purple-700 dark:text-purple-300 rounded-2xl">
                   <FileText size={24} />
                 </div>
                 
               </div>
               <div className="mt-4">
-                <h3 className="text-xl font-bold text-slate-900 tracking-tight">Upload New Resume</h3>
-                <p className="text-slate-500 text-xs mt-1 leading-relaxed">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Upload New Resume</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-xs mt-1 leading-relaxed">
                   Analyze your CV against job descriptions to discover missing ATS keywords or practice tailor-made interviews.
                 </p>
               </div>
               <button 
                 onClick={() => navigate('/upload')}
-                className="mt-6 w-full py-3 bg-white hover:bg-purple-50 border border-purple-200 text-purple-600 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 shadow-sm btn-interactive cursor-pointer"
+                className="mt-6 w-full py-3 bg-white dark:bg-[#100818] dark:text-gray-100 hover:bg-purple-50 dark:bg-purple-900/20 border border-purple-200 text-purple-600 dark:text-purple-400 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 shadow-sm btn-interactive cursor-pointer"
               >
                 <Plus size={16} />
                 Upload New Resume
@@ -267,7 +267,7 @@ export default function Dashboard() {
                 {resumesLoading ? (
                   <div className="text-center py-6 text-white/50 text-sm">Loading Resumes...</div>
                 ) : resumes.length === 0 ? (
-                  <div className="bg-white/5 border border-dashed border-white/10 rounded-[32px] p-8 text-center text-white/60 text-sm">
+                  <div className="bg-white/5 border border-dashed border-white/10 rounded-2xl p-8 text-center text-white/60 text-sm">
                     No resumes uploaded yet. Upload one to start!
                   </div>
                 ) : (
@@ -275,14 +275,14 @@ export default function Dashboard() {
                     <div 
                       key={resume.id}
                       onClick={() => navigate(`/analysis/${resume.id}`)}
-                      className="glass-card rounded-[28px] p-4 shadow-sm hover:shadow-lg transition-all border border-white/40 flex items-center justify-between cursor-pointer group"
+                      className="glass-card rounded-xl p-4 shadow-sm hover:shadow-lg transition-all border border-white/40 flex items-center justify-between cursor-pointer group"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="p-3 bg-purple-50 text-purple-600 rounded-2xl shrink-0">
+                        <div className="p-3 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-2xl shrink-0">
                           <FileText size={18} />
                         </div>
                         <div className="min-w-0">
-                          <h4 className="font-bold text-slate-800 group-hover:text-purple-600 transition-colors truncate max-w-[120px] sm:max-w-[180px]">{resume.filename}</h4>
+                          <h4 className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-600 dark:text-purple-400 transition-colors truncate max-w-[120px] sm:max-w-[180px]">{resume.filename}</h4>
                           <p className="text-slate-400 text-[10px] mt-0.5">
                             Uploaded {new Date(resume.uploaded_at).toLocaleDateString()}
                           </p>
@@ -298,7 +298,7 @@ export default function Dashboard() {
                         >
                           <Trash2 size={14} />
                         </button>
-                        <ChevronRight size={14} className="text-slate-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all" />
+                        <ChevronRight size={14} className="text-slate-400 group-hover:text-purple-600 dark:text-purple-400 group-hover:translate-x-1 transition-all" />
                       </div>
                     </div>
                   ))
@@ -311,7 +311,7 @@ export default function Dashboard() {
           {/* RIGHT COLUMN: Mock Coach Interview */}
           <div className="space-y-6">
             
-            <div className="bg-white rounded-[40px] p-7 md:p-8 shadow-2xl border border-white/80 flex flex-col justify-between min-h-[350px] relative overflow-hidden">
+            <div className="bg-white dark:bg-[#100818] dark:text-gray-100 rounded-2xl p-7 md:p-8 shadow-2xl border border-white/80 flex flex-col justify-between min-h-[350px] relative overflow-hidden">
               <div>
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest pl-1">
@@ -319,10 +319,10 @@ export default function Dashboard() {
                   </span>
                 </div>
 
-                <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight leading-tight">
                   Personal Interview Coach
                 </h2>
-                <p className="text-slate-500 text-sm mt-3 leading-relaxed font-medium">
+                <p className="text-slate-500 dark:text-slate-400 text-sm mt-3 leading-relaxed font-medium">
                   Practice role-specific Q&A generated from your resume. Improve structural clarity and speech delivery.
                 </p>
 
@@ -333,7 +333,7 @@ export default function Dashboard() {
                     <button
                       type="button"
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-100 hover:border-purple-200 rounded-2xl flex items-center justify-between text-xs text-slate-650 font-bold transition-all duration-200 cursor-pointer"
+                      className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 hover:border-purple-200 rounded-2xl flex items-center justify-between text-xs text-slate-650 font-bold transition-all duration-200 cursor-pointer"
                     >
                       <span className="truncate">
                         {resumes.find(r => r.id === selectedResumeId)?.filename || 'Select a version...'}
@@ -344,7 +344,7 @@ export default function Dashboard() {
                     {isDropdownOpen && (
                       <>
                         <div className="fixed inset-0 z-40" onClick={() => setIsDropdownOpen(false)} />
-                        <div className="absolute left-0 right-0 mt-1.5 bg-white border border-purple-100 rounded-2xl shadow-xl z-50 max-h-48 overflow-y-auto p-1.5 space-y-1 animate-in fade-in slide-in-from-top-1 duration-150">
+                        <div className="absolute left-0 right-0 mt-1.5 bg-white dark:bg-[#100818] dark:text-gray-100 border border-purple-100 rounded-2xl shadow-xl z-50 max-h-48 overflow-y-auto p-1.5 space-y-1 animate-in fade-in slide-in-from-top-1 duration-150">
                           {resumes.map((r) => (
                             <button
                               key={r.id}
@@ -355,8 +355,8 @@ export default function Dashboard() {
                               }}
                               className={`w-full px-3 py-2 text-left text-xs font-semibold rounded-xl transition-all flex items-center justify-between cursor-pointer ${
                                 r.id === selectedResumeId
-                                  ? 'bg-purple-100 text-purple-700'
-                                  : 'text-slate-655 hover:bg-purple-50 hover:text-purple-600'
+                                  ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300'
+                                  : 'text-slate-655 hover:bg-purple-50 dark:bg-purple-900/20 hover:text-purple-600 dark:text-purple-400'
                               }`}
                             >
                               <span className="truncate">{r.filename}</span>
@@ -404,9 +404,9 @@ export default function Dashboard() {
       <div className="fixed bottom-8 left-0 right-0 px-6 flex justify-center z-40">
         <button 
           onClick={() => navigate('/profile')}
-          className="px-6 py-3.5 bg-white/95 backdrop-blur-lg text-slate-800 text-[10px] font-black uppercase tracking-wider rounded-full shadow-2xl border border-white/80 hover:bg-white active:scale-95 btn-interactive flex items-center gap-2"
+          className="px-6 py-3.5 bg-white/95 dark:bg-[#100818]/95 backdrop-blur-lg text-slate-800 dark:text-slate-200 text-[10px] font-black uppercase tracking-wider rounded-full shadow-2xl border border-white/80 hover:bg-white dark:bg-[#100818] dark:text-gray-100 active:scale-95 btn-interactive flex items-center gap-2"
         >
-          <User size={12} className="text-purple-600" />
+          <User size={12} className="text-purple-600 dark:text-purple-400" />
           {user?.preferred_roles ? `Targeting: ${user.preferred_roles.split(',')[0]}` : 'Set Target Career Profile'}
         </button>
       </div>

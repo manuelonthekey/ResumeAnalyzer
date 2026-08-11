@@ -70,7 +70,7 @@ export default function Upload() {
         <div className="w-full flex items-center gap-4">
           <button 
             onClick={() => navigate('/dashboard')} 
-            className="p-3 bg-white hover:bg-violet-50 border border-violet-100 rounded-2xl transition-all text-violet-600 flex items-center justify-center btn-interactive shadow-sm"
+            className="p-3 bg-white dark:bg-[#100818] dark:text-gray-100 hover:bg-violet-50 border border-violet-100 rounded-2xl transition-all text-violet-600 flex items-center justify-center btn-interactive shadow-sm"
           >
             <ArrowLeft size={20} />
           </button>
@@ -82,14 +82,14 @@ export default function Upload() {
       </div>
 
       <div className="max-w-xl mx-auto px-4 mt-28">
-        <div className="glass-card rounded-4xl p-8 shadow-md border border-white/60">
+        <div className="glass-card rounded-2xl p-8 shadow-md border border-white/60">
           
           {/* Drag & Drop Area */}
           <div
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            className={`border-2 border-dashed rounded-3xl p-10 flex flex-col items-center justify-center transition-all ${
+            className={`border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center transition-all ${
               dragging 
                 ? 'border-primary-400 bg-primary-50/50' 
                 : file 
@@ -108,10 +108,10 @@ export default function Upload() {
             
             {file ? (
               <div className="flex flex-col items-center">
-                <div className="p-4 bg-emerald-100 text-emerald-500 rounded-3xl mb-4">
+                <div className="p-4 bg-emerald-100 text-emerald-500 rounded-xl mb-4">
                   <FileText size={40} />
                 </div>
-                <h4 className="font-bold text-gray-800 text-lg text-center max-w-[280px] truncate">{file.name}</h4>
+                <h4 className="font-bold text-gray-800 dark:text-gray-200 text-lg text-center max-w-[280px] truncate">{file.name}</h4>
                 <p className="text-gray-400 text-sm mt-1">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                 
                 <button
@@ -124,10 +124,10 @@ export default function Upload() {
               </div>
             ) : (
               <label htmlFor="resume-file" className="cursor-pointer flex flex-col items-center w-full">
-                <div className="p-4 bg-primary-100 text-primary-500 rounded-3xl mb-4 transition-transform hover:scale-105">
+                <div className="p-4 bg-primary-100 text-primary-500 rounded-xl mb-4 transition-transform hover:scale-105">
                   <UploadIcon size={40} />
                 </div>
-                <h4 className="font-bold text-gray-700 text-lg">Drag & Drop Resume</h4>
+                <h4 className="font-bold text-gray-700 dark:text-gray-300 text-lg">Drag & Drop Resume</h4>
                 <p className="text-gray-400 text-sm mt-1">or click to browse from files</p>
               </label>
             )}
@@ -144,7 +144,7 @@ export default function Upload() {
             <button
               onClick={handleUpload}
               disabled={loading}
-              className="w-full mt-6 gradient-header text-white font-semibold py-4 rounded-3xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 btn-interactive"
+              className="w-full mt-6 gradient-header text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 btn-interactive"
             >
               {loading ? (
                 <>

@@ -193,7 +193,7 @@ export default function Interview() {
         <div className="w-full flex items-center gap-4">
           <button 
             onClick={() => navigate('/dashboard')} 
-            className="p-3 bg-white hover:bg-violet-50 border border-violet-100 rounded-2xl transition-all text-violet-600 flex items-center justify-center btn-interactive shadow-sm"
+            className="p-3 bg-white dark:bg-[#100818] dark:text-gray-100 hover:bg-violet-50 border border-violet-100 rounded-2xl transition-all text-violet-600 flex items-center justify-center btn-interactive shadow-sm"
           >
             <ArrowLeft size={20} />
           </button>
@@ -209,12 +209,12 @@ export default function Interview() {
         {/* PHASE 1: START SCREEN */}
         {!sessionStarted && (
           <div className="space-y-6">
-            <div className="glass-card rounded-4xl p-8 shadow-md border border-white/60 text-center">
-              <div className="w-20 h-20 bg-purple-100 text-purple-600 rounded-3xl mx-auto flex items-center justify-center mb-6 shadow-sm">
+            <div className="glass-card rounded-2xl p-8 shadow-md border border-white/60 text-center">
+              <div className="w-20 h-20 bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 rounded-xl mx-auto flex items-center justify-center mb-6 shadow-sm">
                 <Play size={36} className="fill-current" />
               </div>
               
-              <h2 className="text-2xl font-extrabold text-gray-800 tracking-tight">Ready to Prep?</h2>
+              <h2 className="text-2xl font-extrabold text-gray-800 dark:text-gray-200 tracking-tight">Ready to Prep?</h2>
               <p className="text-gray-500 text-sm max-w-sm mx-auto mt-2 leading-relaxed">
                 We'll generate customized questions targeting the experience and projects on your resume.
               </p>
@@ -231,7 +231,7 @@ export default function Interview() {
                         onClick={() => setSessionType(type)}
                         className={`flex-1 py-2 text-xs font-bold rounded-xl uppercase transition-all cursor-pointer ${
                           sessionType === type 
-                            ? 'bg-white text-purple-600 shadow-sm' 
+                            ? 'bg-white dark:bg-[#100818] dark:text-gray-100 text-purple-600 dark:text-purple-400 shadow-sm' 
                             : 'text-gray-400 hover:text-gray-500'
                         }`}
                       >
@@ -244,7 +244,7 @@ export default function Interview() {
                 <button
                   onClick={handleStartSession}
                   disabled={loadingQuestion}
-                  className="w-full gradient-header text-white font-semibold py-4 rounded-3xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 btn-interactive cursor-pointer"
+                  className="w-full gradient-header text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 btn-interactive cursor-pointer"
                 >
                   {loadingQuestion ? 'Generating first question...' : 'Start Interview'}
                 </button>
@@ -256,7 +256,7 @@ export default function Interview() {
               <h3 className="text-lg font-bold text-white tracking-tight pl-1">Past Sessions History</h3>
               <div className="space-y-3">
                 {interviewHistory.length === 0 ? (
-                  <div className="bg-white/5 border border-dashed border-white/10 rounded-[32px] p-8 text-center text-white/60 text-sm">
+                  <div className="bg-white/5 border border-dashed border-white/10 rounded-2xl p-8 text-center text-white/60 text-sm">
                     No mock sessions completed yet.
                   </div>
                 ) : (
@@ -267,14 +267,14 @@ export default function Interview() {
                         navigate(`/interview/${session.resume_id}?session=${session.id}`);
                         window.location.reload();
                       }}
-                      className="glass-card rounded-[28px] p-4 shadow-sm hover:shadow-lg transition-all border border-white/40 flex items-center justify-between cursor-pointer group"
+                      className="glass-card rounded-xl p-4 shadow-sm hover:shadow-lg transition-all border border-white/40 flex items-center justify-between cursor-pointer group"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="p-3 bg-purple-50 text-purple-650 rounded-2xl shrink-0">
+                        <div className="p-3 bg-purple-50 dark:bg-purple-900/20 text-purple-650 rounded-2xl shrink-0">
                           <Target size={18} />
                         </div>
                         <div className="min-w-0">
-                          <h4 className="font-bold text-slate-800 group-hover:text-purple-600 transition-colors capitalize truncate max-w-[180px] sm:max-w-[240px]">
+                          <h4 className="font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-600 dark:text-purple-400 transition-colors capitalize truncate max-w-[180px] sm:max-w-[240px]">
                             {session.session_type} Prep
                           </h4>
                           <p className="text-slate-400 text-[10px] mt-0.5">
@@ -286,7 +286,7 @@ export default function Interview() {
                         <span className="font-black text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-full text-[10px]">
                           {session.overall_score || 0}%
                         </span>
-                        <ChevronRight size={14} className="text-slate-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all" />
+                        <ChevronRight size={14} className="text-slate-400 group-hover:text-purple-600 dark:text-purple-400 group-hover:translate-x-1 transition-all" />
                       </div>
                     </div>
                   ))
@@ -301,7 +301,7 @@ export default function Interview() {
           <div className="space-y-6">
             
             {/* Question Card */}
-            <div className="glass-card rounded-4xl p-6 shadow-md border border-white/60 relative overflow-hidden">
+            <div className="glass-card rounded-2xl p-6 shadow-md border border-white/60 relative overflow-hidden">
               <div className="flex justify-between items-center mb-4">
                 <span className="text-xs font-black uppercase tracking-wider text-primary-600 bg-primary-50 border border-primary-100 px-3 py-1 rounded-full">
                   Question #{questionNumber}
@@ -315,23 +315,23 @@ export default function Interview() {
                 </button>
               </div>
 
-              <h3 className="text-xl font-extrabold text-gray-800 leading-snug">
+              <h3 className="text-xl font-extrabold text-gray-800 dark:text-gray-200 leading-snug">
                 {currentQuestion}
               </h3>
             </div>
 
             {!feedback ? (
-              <div className="glass-card rounded-4xl p-6 shadow-md border border-white/60 relative overflow-hidden">
+              <div className="glass-card rounded-2xl p-6 shadow-md border border-white/60 relative overflow-hidden">
                 {/* Speech Recognition Active Overlay Popup */}
                 {isListening && (
-                  <div className="absolute inset-0 bg-white/95 backdrop-blur-sm z-30 flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-200">
+                  <div className="absolute inset-0 bg-white/95 dark:bg-[#100818]/95 backdrop-blur-sm z-30 flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-200">
                     <div className="relative flex items-center justify-center mb-4">
                       <div className="absolute w-20 h-20 bg-coral-100 rounded-full animate-ping opacity-75"></div>
                       <div className="w-16 h-16 rounded-full bg-coral-500 text-white flex items-center justify-center shadow-lg relative z-10">
                         <Mic size={28} />
                       </div>
                     </div>
-                    <h4 className="text-lg font-black text-gray-800">Voice Recording Active</h4>
+                    <h4 className="text-lg font-black text-gray-800 dark:text-gray-200">Voice Recording Active</h4>
                     <p className="text-xs text-gray-400 mt-1 max-w-xs">
                       Speak clearly into your microphone. Your words will appear in the input field.
                     </p>
@@ -346,14 +346,14 @@ export default function Interview() {
                 )}
 
                 <div className="flex justify-between items-center mb-4">
-                  <h4 className="font-bold text-gray-800">Your Answer</h4>
+                  <h4 className="font-bold text-gray-800 dark:text-gray-200">Your Answer</h4>
                   {/* Voice Button */}
                   <button
                     onClick={toggleListening}
                     className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold border transition-all cursor-pointer ${
                       isListening 
                         ? 'bg-primary-500 border-primary-500 text-white animate-pulse' 
-                        : 'bg-white border-primary-200 text-primary-600 hover:bg-primary-50'
+                        : 'bg-white dark:bg-[#100818] dark:text-gray-100 border-primary-200 text-primary-600 hover:bg-primary-50'
                     }`}
                   >
                     <Mic size={14} /> Speak Answer
@@ -365,21 +365,21 @@ export default function Interview() {
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
                   placeholder="Type your response or click 'Speak Answer' to talk..."
-                  className="w-full p-4 bg-gray-50 border border-gray-100 rounded-3xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all text-gray-700 text-sm mb-4"
+                  className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 transition-all text-gray-700 dark:text-gray-300 text-sm mb-4"
                   disabled={loadingFeedback}
                 />
 
                 <div className="flex gap-4">
                   <button
                     onClick={handleEndSession}
-                    className="flex-1 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold rounded-3xl transition-all btn-interactive"
+                    className="flex-1 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold rounded-xl transition-all btn-interactive"
                   >
                     End Session
                   </button>
                   <button
                     onClick={handleSubmitAnswer}
                     disabled={loadingFeedback || !userAnswer.trim()}
-                    className="flex-[2] gradient-header text-white font-semibold py-3.5 rounded-3xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 btn-interactive"
+                    className="flex-[2] gradient-header text-white font-semibold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 btn-interactive"
                   >
                     {loadingFeedback ? (
                       <>
@@ -396,19 +396,19 @@ export default function Interview() {
             ) : (
               /* Feedback Display Card */
               <div className="space-y-6">
-                <div className="glass-card bg-emerald-50/50 rounded-4xl p-6 shadow-md border border-emerald-100 flex items-center gap-4">
+                <div className="glass-card bg-emerald-50/50 rounded-2xl p-6 shadow-md border border-emerald-100 flex items-center gap-4">
                   <div className="w-16 h-16 rounded-full bg-emerald-500 text-white flex flex-col items-center justify-center shadow shrink-0">
                     <span className="text-2xl font-black">{feedback.score || 0}</span>
                     <span className="text-[9px] font-semibold text-white/80">/100</span>
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-800 text-lg">Answer Feedback</h4>
+                    <h4 className="font-bold text-gray-800 dark:text-gray-200 text-lg">Answer Feedback</h4>
                     <p className="text-sm text-gray-600 mt-0.5">{feedback.suggestion}</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="glass-card rounded-4xl p-6 shadow-sm border border-white/60">
+                  <div className="glass-card rounded-2xl p-6 shadow-sm border border-white/60">
                     <h5 className="font-bold text-emerald-600 mb-3 flex items-center gap-2">
                       <CheckCircle size={18} /> Strengths
                     </h5>
@@ -417,7 +417,7 @@ export default function Interview() {
                     </ul>
                   </div>
 
-                  <div className="glass-card rounded-4xl p-6 shadow-sm border border-white/60">
+                  <div className="glass-card rounded-2xl p-6 shadow-sm border border-white/60">
                     <h5 className="font-bold text-amber-600 mb-3 flex items-center gap-2">
                       <AlertTriangle size={18} /> Areas to Improve
                     </h5>
@@ -429,7 +429,7 @@ export default function Interview() {
 
                 <button
                   onClick={handleNextQuestion}
-                  className="w-full gradient-header text-white font-semibold py-4 rounded-3xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 btn-interactive"
+                  className="w-full gradient-header text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 btn-interactive"
                 >
                   Next Question <ChevronRight size={18} />
                 </button>
@@ -443,13 +443,13 @@ export default function Interview() {
           <div className="space-y-6">
             
             {/* Overview Score Card */}
-            <div className="glass-card rounded-4xl p-8 shadow-md border border-white/60 text-center relative overflow-hidden">
+            <div className="glass-card rounded-2xl p-8 shadow-md border border-white/60 text-center relative overflow-hidden">
               <div className="w-28 h-28 rounded-full gradient-header text-white mx-auto flex flex-col items-center justify-center shadow-lg mb-6">
                 <span className="text-4xl font-black">{sessionDetails?.overall_score || 0}</span>
                 <span className="text-xs font-semibold text-white/80">/100 Overall</span>
               </div>
 
-              <h2 className="text-2xl font-extrabold text-gray-800 tracking-tight">Interview Finished!</h2>
+              <h2 className="text-2xl font-extrabold text-gray-800 dark:text-gray-200 tracking-tight">Interview Finished!</h2>
               <p className="text-gray-500 text-sm max-w-sm mx-auto mt-2 leading-relaxed">
                 Here is how you performed overall during the session.
               </p>
@@ -458,15 +458,15 @@ export default function Interview() {
             {/* AI Summary details */}
             {sessionDetails?.feedback_summary && (
               <div className="space-y-6">
-                <div className="glass-card rounded-4xl p-6 shadow-sm border border-white/60">
-                  <h3 className="font-bold text-gray-800 text-lg mb-2">Overall Feedback</h3>
+                <div className="glass-card rounded-2xl p-6 shadow-sm border border-white/60">
+                  <h3 className="font-bold text-gray-800 dark:text-gray-200 text-lg mb-2">Overall Feedback</h3>
                   <p className="text-sm text-gray-600 leading-relaxed">
                     {sessionDetails.feedback_summary.overall_summary}
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="glass-card rounded-4xl p-6 shadow-sm border border-white/60">
+                  <div className="glass-card rounded-2xl p-6 shadow-sm border border-white/60">
                     <h4 className="font-bold text-emerald-600 mb-3 flex items-center gap-1.5">
                       <Award size={18} /> Key Strengths
                     </h4>
@@ -475,7 +475,7 @@ export default function Interview() {
                     </ul>
                   </div>
 
-                  <div className="glass-card rounded-4xl p-6 shadow-sm border border-white/60">
+                  <div className="glass-card rounded-2xl p-6 shadow-sm border border-white/60">
                     <h4 className="font-bold text-amber-600 mb-3 flex items-center gap-1.5">
                       <AlertTriangle size={18} /> Key Weaknesses
                     </h4>
@@ -485,8 +485,8 @@ export default function Interview() {
                   </div>
                 </div>
 
-                 <div className="glass-card rounded-4xl p-6 shadow-sm border border-white/60">
-                  <h4 className="font-bold text-gray-800 text-lg mb-3">Action Items</h4>
+                 <div className="glass-card rounded-2xl p-6 shadow-sm border border-white/60">
+                  <h4 className="font-bold text-gray-800 dark:text-gray-200 text-lg mb-3">Action Items</h4>
                   <ul className="text-sm text-gray-600 space-y-2">
                     {sessionDetails.feedback_summary.action_items?.map((item, i) => (
                       <li key={i} className="flex gap-2 items-start">
@@ -502,10 +502,10 @@ export default function Interview() {
             {/* Q&A logs review */}
             {sessionDetails?.feedback_logs?.length > 0 && (
               <div className="mt-8">
-                <h3 className="text-xl font-extrabold text-gray-800 mb-4 pl-1">Review Answers</h3>
+                <h3 className="text-xl font-extrabold text-gray-800 dark:text-gray-200 mb-4 pl-1">Review Answers</h3>
                 <div className="space-y-4">
                   {sessionDetails.feedback_logs.map((log) => (
-                    <div key={log.id} className="bg-white rounded-3xl p-5 border border-gray-150 shadow-sm space-y-3">
+                    <div key={log.id} className="bg-white dark:bg-[#100818] dark:text-gray-100 rounded-xl p-5 border border-gray-150 shadow-sm space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-xs font-black text-primary-600 uppercase tracking-wide">
                           Question {log.question_number}
@@ -514,7 +514,7 @@ export default function Interview() {
                           Score: {log.confidence_score || 0}
                         </span>
                       </div>
-                      <h4 className="font-bold text-gray-800 text-sm leading-snug">{log.question_text}</h4>
+                      <h4 className="font-bold text-gray-800 dark:text-gray-200 text-sm leading-snug">{log.question_text}</h4>
                       <div className="bg-gray-50/50 p-3 rounded-2xl border border-gray-100">
                         <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">Your Answer</p>
                         <p className="text-sm text-gray-600 italic">"{log.user_answer}"</p>
@@ -527,7 +527,7 @@ export default function Interview() {
 
             <button
               onClick={() => navigate('/dashboard')}
-              className="w-full gradient-header text-white font-semibold py-4 rounded-3xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 btn-interactive"
+              className="w-full gradient-header text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 btn-interactive"
             >
               Back to Dashboard
             </button>
