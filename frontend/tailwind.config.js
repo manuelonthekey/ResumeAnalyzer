@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
+  darkMode: 'class', // Enforce dark mode class
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{html,ts}",
   ],
   theme: {
     extend: {
@@ -13,14 +13,14 @@ export default {
           200: '#FFD1D3',
           300: '#FFA8AB',
           400: '#FF7F84',
-          500: '#FFA19E', // Main soft pinkish-coral from user image
+          500: '#FFA19E',
           600: '#FF8884',
           700: '#E6726E',
         },
         softBlue: {
           50: '#F0F9FF',
           100: '#E4F4FD',
-          200: '#D4F0FC', // Soft blue card from user image
+          200: '#D4F0FC',
           300: '#7DD3FC',
           400: '#38BDF8',
           500: '#2DAAE1',
@@ -35,10 +35,10 @@ export default {
         },
         softOrange: {
           50: '#FFFDF9',
-          100: '#FFF0EC', // Soft orange/peach card
+          100: '#FFF0EC',
           200: '#FEE2DB',
         },
-        canvas: '#FFEBE7', // Background soft peach/coral color
+        canvas: '#FFEBE7',
       },
       borderRadius: {
         '4xl': '2rem',

@@ -1,0 +1,243 @@
+<div class="min-h-screen bg-transparent pb-12">
+  <div class="fixed top-0 left-0 right-0 z-50 frosted-header rounded-b-[36px] px-8 py-5 shadow-sm">
+    <div class="w-full flex items-center gap-4">
+      <button 
+        (click)="goBack()" 
+        class="p-3 bg-white dark:bg-[#100818] dark:text-gray-100 hover:bg-violet-50 border border-violet-100 rounded-2xl transition-all text-violet-600 flex items-center justify-center btn-interactive shadow-sm"
+      >
+        <lucide-icon [img]="ArrowLeft" [size]="20"></lucide-icon>
+      </button>
+      <div class="flex-1">
+        <h1 class="text-2xl font-extrabold tracking-tight truncate max-w-[300px] md:max-w-none text-white">
+          {{ resume()?.filename || 'Resume Analysis' }}
+        </h1>
+        <p class="text-purple-200 text-sm mt-0.5">
+          <ng-container *ngIf="resume()">Uploaded on {{ resume()?.uploaded_at | date }}</ng-container>
+          <ng-container *ngIf="!resume()">Loading...</ng-container>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 mt-28">
+    <div class="flex bg-white/60 p-1.5 rounded-xl mb-6 max-w-md mx-auto border border-white/85">
+      <button
+        (click)="activeTab.set('structure')"
+        [class]="'flex-1 py-3 text-sm font-semibold rounded-2xl transition-all cursor-pointer ' + 
+          (activeTab() === 'structure' ? 'bg-white dark:bg-[#100818] dark:text-gray-100 text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-700 dark:text-gray-300')"
+      >
+        Parsed Structure
+      </button>
+      <button
+        (click)="activeTab.set('analysis')"
+        [class]="'flex-1 py-3 text-sm font-semibold rounded-2xl transition-all cursor-pointer ' + 
+          (activeTab() === 'analysis' ? 'bg-white dark:bg-[#100818] dark:text-gray-100 text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-700 dark:text-gray-300')"
+      >
+        AI Review & ATS
+      </button>
+    </div>
+
+    <div *ngIf="resumeLoading()" class="text-center py-12 text-gray-500">Loading resume...</div>
+
+    <div *ngIf="!resumeLoading()">
+      <!-- TAB 1: Structure -->
+      <div *ngIf="activeTab() === 'structure'" class="space-y-6">
+        
+        <div class="glass-card rounded-2xl p-6 shadow-sm border border-white/60">
+          <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+            <lucide-icon [img]="Star" class="text-primary-500" [size]="20"></lucide-icon> Personal Information
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div><span class="text-gray-400">Name:</span> <span class="font-semibold text-gray-700 dark:text-gray-300">{{ parsed().personal?.name }}</span></div>
+            <div><span class="text-gray-400">Email:</span> <span class="font-semibold text-gray-700 dark:text-gray-300">{{ parsed().personal?.email }}</span></div>
+            <div><span class="text-gray-400">Phone:</span> <span class="font-semibold text-gray-700 dark:text-gray-300">{{ parsed().personal?.phone }}</span></div>
+            <div><span class="text-gray-400">Location:</span> <span class="font-semibold text-gray-700 dark:text-gray-300">{{ parsed().personal?.location }}</span></div>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 shadow-sm border border-white/60">
+          <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+            <lucide-icon [img]="BookOpen" class="text-primary-500" [size]="20"></lucide-icon> Education
+          </h3>
+          <div *ngIf="parsed().education?.length > 0; else noEdu" class="space-y-4">
+            <div *ngFor="let edu of parsed().education" class="border-l-2 border-primary-200 pl-4 py-1">
+              <h4 class="font-bold text-gray-800 dark:text-gray-200">{{ edu.degree }} <span *ngIf="edu.field">in {{ edu.field }}</span></h4>
+              <p class="text-gray-600 text-sm">{{ edu.institution }} <span *ngIf="edu.year_end">• Class of {{ edu.year_end }}</span></p>
+              <p *ngIf="edu.cgpa" class="text-primary-500 text-xs font-semibold mt-1">Score: {{ edu.cgpa }}</p>
+            </div>
+          </div>
+          <ng-template #noEdu><p class="text-gray-400 text-sm">No education data found</p></ng-template>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 shadow-sm border border-white/60">
+          <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+            <lucide-icon [img]="Briefcase" class="text-primary-500" [size]="20"></lucide-icon> Work Experience
+          </h3>
+          <div *ngIf="parsed().experience?.length > 0; else noExp" class="space-y-6">
+            <div *ngFor="let exp of parsed().experience" class="border-l-2 border-primary-200 pl-4">
+              <div class="flex justify-between items-start flex-wrap gap-1">
+                <h4 class="font-bold text-gray-800 dark:text-gray-200 text-lg">{{ exp.title }}</h4>
+                <span class="text-xs bg-primary-50 text-primary-600 px-3 py-1 rounded-full border border-primary-100 font-semibold">
+                  {{ exp.duration_start }} <span *ngIf="exp.duration_end">to {{ exp.duration_end }}</span>
+                </span>
+              </div>
+              <p class="text-gray-600 text-sm font-semibold">{{ exp.company }}</p>
+              
+              <div *ngIf="exp.keywords?.length > 0; else noKeywords" class="flex flex-wrap gap-1.5 mt-2">
+                <span *ngFor="let kw of exp.keywords" class="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-xl border border-gray-200">{{ kw }}</span>
+              </div>
+              <ng-template #noKeywords>
+                <p class="text-gray-500 text-sm mt-2 line-clamp-3">{{ exp.description }}</p>
+              </ng-template>
+            </div>
+          </div>
+          <ng-template #noExp><p class="text-gray-400 text-sm">No work experience found</p></ng-template>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 shadow-sm border border-white/60">
+          <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+            <lucide-icon [img]="Code" class="text-primary-500" [size]="20"></lucide-icon> Skills
+          </h3>
+          
+          <div *ngIf="displaySkills().length > 0 || (parsed().skills?.experience_keywords?.length > 0); else noSkills">
+            <div *ngIf="displaySkills().length > 0" class="space-y-4">
+              <div class="flex flex-wrap gap-2">
+                <span *ngFor="let skill of displaySkills()" class="bg-white dark:bg-[#100818] dark:text-gray-100 px-4 py-2 rounded-2xl shadow-sm text-sm font-semibold text-gray-700 dark:text-gray-300 border border-primary-100">
+                  {{ skill }}
+                </span>
+              </div>
+              
+              <div *ngIf="parsed().skills?.experience_keywords?.length > 0">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Keywords from Experience</p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span *ngFor="let kw of parsed().skills.experience_keywords.slice(0, 25)" class="text-xs bg-blue-50 text-blue-600 px-2.5 py-1 rounded-xl border border-blue-100">{{ kw }}</span>
+                </div>
+              </div>
+
+              <div *ngIf="parsed().skills?.project_keywords?.length > 0">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Keywords from Projects</p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span *ngFor="let kw of parsed().skills.project_keywords.slice(0, 20)" class="text-xs bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-xl border border-emerald-100">{{ kw }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #noSkills>
+            <p class="text-gray-400 text-sm">No skills extracted. Try running the AI Review to identify key skills from your experience.</p>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- TAB 2: Analysis -->
+      <div *ngIf="activeTab() === 'analysis'" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="lg:col-span-1 space-y-6">
+          <div class="glass-card rounded-2xl p-6 shadow-sm border border-white/60 h-full">
+            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2">Target Job Description</h3>
+            <p class="text-gray-400 text-sm mb-4">Paste the Job Description below to evaluate match and extract missing keywords.</p>
+            
+            <textarea
+              rows="12"
+              [ngModel]="jdText()"
+              (ngModelChange)="jdText.set($event)"
+              placeholder="Paste the Job Description / Job Ad here..."
+              class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 transition-all text-gray-700 dark:text-gray-300 text-sm mb-4 resize-none"
+            ></textarea>
+
+            <button
+              (click)="runAnalysis()"
+              [disabled]="analyzeLoading()"
+              class="w-full gradient-header text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 btn-interactive"
+            >
+              <ng-container *ngIf="analyzeLoading(); else analyzeBtn">
+                <lucide-icon [img]="Loader" class="animate-spin" [size]="18"></lucide-icon> Analyzing...
+              </ng-container>
+              <ng-template #analyzeBtn>Analyze</ng-template>
+            </button>
+            <div *ngIf="analyzeError()" class="mt-4 p-3 bg-red-50 text-red-600 rounded-2xl text-sm border border-red-100 text-center">
+              {{ analyzeError() }}
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-2 space-y-6">
+          <div *ngIf="latestAnalysis(); else noAnalysis">
+            
+            <div class="glass-card rounded-2xl p-6 shadow-sm border border-white/60 flex flex-col md:flex-row items-center gap-6 mb-6">
+              <div class="w-28 h-28 rounded-full gradient-header text-white flex flex-col items-center justify-center shadow-lg shrink-0">
+                <span class="text-4xl font-black">{{ latestAnalysis().overall_rating || 0 }}</span>
+                <span class="text-xs font-semibold text-white/80">/10 Rating</span>
+              </div>
+              <div>
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Overall Assessment</h3>
+                <p class="text-gray-600 text-sm mt-1 leading-relaxed">{{ latestAnalysis().summary }}</p>
+                
+                <div *ngIf="analyses()[0]?.ats_score !== null" class="mt-4 flex items-center gap-3">
+                  <span class="text-sm font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-2xl border border-emerald-200 flex items-center gap-1.5">
+                    <lucide-icon [img]="Award" [size]="16"></lucide-icon> ATS Match: {{ analyses()[0].ats_score }}%
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div class="glass-card rounded-2xl p-6 shadow-sm border border-white/60">
+                <h4 class="font-bold text-gray-800 dark:text-gray-200 text-lg mb-4 flex items-center gap-2">
+                  <lucide-icon [img]="CheckCircle" class="text-emerald-500" [size]="20"></lucide-icon> Strengths
+                </h4>
+                <ul class="space-y-2 text-sm text-gray-600 pl-1">
+                  <li *ngFor="let str of latestAnalysis().strengths" class="flex gap-2">
+                    <span class="text-emerald-500 font-bold">•</span>
+                    <span>{{ str }}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="glass-card rounded-2xl p-6 shadow-sm border border-white/60">
+                <h4 class="font-bold text-gray-800 dark:text-gray-200 text-lg mb-4 flex items-center gap-2">
+                  <lucide-icon [img]="AlertTriangle" class="text-amber-500" [size]="20"></lucide-icon> Areas to Improve
+                </h4>
+                <ul class="space-y-2 text-sm text-gray-600 pl-1">
+                  <li *ngFor="let weak of latestAnalysis().weaknesses" class="flex gap-2">
+                    <span class="text-amber-500 font-bold">•</span>
+                    <span>{{ weak }}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="glass-card rounded-2xl p-6 shadow-sm border border-white/60 md:col-span-2">
+                <h4 class="font-bold text-gray-800 dark:text-gray-200 text-lg mb-4 flex items-center gap-2">
+                  <lucide-icon [img]="Lightbulb" class="text-primary-500" [size]="20"></lucide-icon> Specific Suggestions
+                </h4>
+                <div class="space-y-3">
+                  <div *ngFor="let sug of latestAnalysis().suggestions" class="bg-white dark:bg-[#100818] dark:text-gray-100 p-4 rounded-2xl border border-primary-50/50 shadow-sm flex items-start gap-3">
+                    <span class="text-xs font-bold text-primary-600 bg-primary-50 px-2.5 py-1 rounded-full uppercase border border-primary-100 mt-0.5 shrink-0">
+                      {{ sug.section }}
+                    </span>
+                    <p class="text-sm text-gray-600 mt-0.5">{{ sug.suggestion }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="latestAnalysis().ats_keywords_missing?.length > 0" class="glass-card rounded-2xl p-6 shadow-sm border border-white/60 md:col-span-2">
+                <h4 class="font-bold text-gray-800 dark:text-gray-200 text-lg mb-4">Missing ATS Keywords</h4>
+                <div class="flex flex-wrap gap-2">
+                  <span *ngFor="let kw of latestAnalysis().ats_keywords_missing" class="bg-amber-50 text-amber-700 px-3 py-1.5 rounded-2xl text-xs font-semibold border border-amber-200">
+                    {{ kw }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <ng-template #noAnalysis>
+            <div class="bg-white/50 border border-dashed border-gray-200 rounded-xl p-8 text-center text-gray-500 h-full flex flex-col items-center justify-center min-h-[300px]">
+              <lucide-icon [img]="FileText" class="text-gray-300 mb-3" [size]="48"></lucide-icon>
+              <p>Paste a Job Description on the left and click <b>Analyze</b> <br/> to get an AI assessment.</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

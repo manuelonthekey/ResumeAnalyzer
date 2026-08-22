@@ -1,0 +1,178 @@
+<div class="min-h-screen pb-24 pt-28 relative bg-transparent">
+  
+  <div class="fixed top-0 left-0 right-0 z-50 frosted-header rounded-b-[36px] px-8 py-5 shadow-sm flex items-center justify-between text-white">
+    <div class="max-w-6xl mx-auto w-full flex justify-between items-center">
+      <div class="flex items-center gap-4">
+        <div 
+          (click)="navigateTo('/profile')"
+          class="w-13 h-13 rounded-full overflow-hidden border-2 border-white cursor-pointer hover:scale-105 transition-all bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center shadow-md shrink-0"
+        >
+          <img *ngIf="authService.user()?.profile_picture; else defaultUser" [src]="authService.user()?.profile_picture" alt="Avatar" class="w-full h-full object-cover" />
+          <ng-template #defaultUser>
+            <lucide-icon [img]="User" class="text-purple-500" [size]="20"></lucide-icon>
+          </ng-template>
+        </div>
+        <div>
+          <h1 class="text-xl md:text-2xl font-extrabold text-white leading-tight flex items-center gap-1.5">
+            {{ authService.user()?.name }}
+            <button (click)="handleLogout()" class="p-1 text-purple-200 hover:text-red-400 transition-colors ml-1.5">
+              <lucide-icon [img]="LogOut" [size]="16"></lucide-icon>
+            </button>
+          </h1>
+          <p class="text-purple-200 text-xs md:text-sm mt-0.5 font-medium">{{ authService.user()?.email }}</p>
+        </div>
+      </div>
+
+      <div 
+        (click)="showScoresDropdown.set(!showScoresDropdown())"
+        class="flex items-center gap-2.5 cursor-pointer hover:scale-105 active:scale-98 transition-all bg-white/5 border border-white/10 rounded-2xl py-1.5 pl-2 pr-3.5 shadow-sm backdrop-blur-sm"
+      >
+        <div class="relative flex items-center justify-center w-9 h-9">
+          <svg height="36" width="36" class="transform -rotate-90">
+            <circle stroke="rgba(255, 255, 255, 0.1)" fill="transparent" strokeWidth="2.5" r="13" cx="18" cy="18"></circle>
+            <circle stroke="#d8b4fe" fill="transparent" strokeWidth="2.5" [attr.stroke-dasharray]="2 * 3.14159 * 13" [attr.stroke-dashoffset]="(2 * 3.14159 * 13) - (avgScore / 100) * (2 * 3.14159 * 13)" strokeLinecap="round" r="13" cx="18" cy="18" class="transition-all duration-500"></circle>
+          </svg>
+          <div class="absolute text-[9px] font-black text-white">{{ avgScore }}%</div>
+        </div>
+        <div class="text-left leading-none">
+          <div class="text-[9px] font-bold text-white uppercase tracking-wider">Overall progress</div>
+          <div class="text-[8px] text-purple-200 mt-0.5 font-semibold">{{ feedbackSummary()?.total_sessions || 0 }} Sessions</div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showScoresDropdown()" class="absolute right-8 top-20 w-64 bg-white/95 dark:bg-[#100818]/95 backdrop-blur-md rounded-xl shadow-2xl border border-purple-100 p-4 z-50 text-gray-800 dark:text-gray-200 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
+      <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Last 7 Sessions</h4>
+      <p *ngIf="interviewHistory().length === 0" class="text-xs text-gray-400">No sessions completed yet.</p>
+      
+      <div *ngFor="let session of interviewHistory().slice(0, 7)" class="flex justify-between items-center py-1.5 border-b border-gray-50 last:border-b-0">
+        <div class="flex flex-col">
+          <span class="text-xs font-bold text-gray-700 dark:text-gray-300 capitalize">{{ session.session_type }}</span>
+          <span class="text-[10px] text-gray-400">{{ session.started_at | date }}</span>
+        </div>
+        <span class="text-[10px] font-black text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 border border-purple-100 px-2.5 py-0.5 rounded-full">
+          {{ session.overall_score || 0 }}%
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full max-w-[80%] mx-auto px-4 sm:px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+      
+      <div class="space-y-6">
+        <div class="bg-purple-100/40 dark:bg-purple-900/20 border border-purple-200/50 rounded-2xl p-6 shadow-sm flex flex-col justify-between min-h-[220px]">
+          <div class="flex justify-between items-start">
+            <div class="p-3.5 bg-purple-200 text-purple-700 dark:text-purple-300 rounded-2xl">
+              <lucide-icon [img]="FileText" [size]="24"></lucide-icon>
+            </div>
+          </div>
+          <div class="mt-4">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Upload New Resume</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-xs mt-1 leading-relaxed">
+              Analyze your CV against job descriptions to discover missing ATS keywords or practice tailor-made interviews.
+            </p>
+          </div>
+          <button 
+            (click)="navigateTo('/upload')"
+            class="mt-6 w-full py-3 bg-white dark:bg-[#100818] dark:text-gray-100 hover:bg-purple-50 dark:bg-purple-900/20 border border-purple-200 text-purple-600 dark:text-purple-400 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 shadow-sm btn-interactive cursor-pointer"
+          >
+            <lucide-icon [img]="Plus" [size]="16"></lucide-icon>
+            Upload New Resume
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-lg font-bold text-white tracking-tight pl-1">Uploaded Resumes</h3>
+
+          <div class="space-y-3">
+            <div *ngIf="resumesLoading()" class="text-center py-6 text-white/50 text-sm">Loading Resumes...</div>
+            <div *ngIf="!resumesLoading() && resumes().length === 0" class="bg-white/5 border border-dashed border-white/10 rounded-2xl p-8 text-center text-white/60 text-sm">
+              No resumes uploaded yet. Upload one to start!
+            </div>
+            
+            <div *ngFor="let resume of resumes()" (click)="navigateTo('/analysis/' + resume.id)" class="glass-card rounded-xl p-4 shadow-sm hover:shadow-lg transition-all border border-white/40 flex items-center justify-between cursor-pointer group">
+              <div class="flex items-center gap-3">
+                <div class="p-3 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-2xl shrink-0">
+                  <lucide-icon [img]="FileText" [size]="18"></lucide-icon>
+                </div>
+                <div class="min-w-0">
+                  <h4 class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-600 dark:text-purple-400 transition-colors truncate max-w-[120px] sm:max-w-[180px]">{{ resume.filename }}</h4>
+                  <p class="text-slate-400 text-[10px] mt-0.5">Uploaded {{ resume.uploaded_at | date }}</p>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-2 shrink-0">
+                <button (click)="handleDeleteResume($event, resume.id, resume.filename)" class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                  <lucide-icon [img]="Trash2" [size]="14"></lucide-icon>
+                </button>
+                <lucide-icon [img]="ChevronRight" [size]="14" class="text-slate-400 group-hover:text-purple-600 dark:text-purple-400 group-hover:translate-x-1 transition-all"></lucide-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-white dark:bg-[#100818] dark:text-gray-100 rounded-2xl p-7 md:p-8 shadow-2xl border border-white/80 flex flex-col justify-between min-h-[350px] relative overflow-hidden">
+          <div>
+            <div class="flex justify-between items-center mb-6">
+              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest pl-1">Ace Your Interviews</span>
+            </div>
+
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight leading-tight">Personal Interview Coach</h2>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mt-3 leading-relaxed font-medium">
+              Practice role-specific Q&A generated from your resume. Improve structural clarity and speech delivery.
+            </p>
+
+            <div *ngIf="resumes().length > 0" class="mt-5 text-left relative">
+              <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-1 pl-1">Target Resume Version</label>
+              <button
+                type="button"
+                (click)="isDropdownOpen.set(!isDropdownOpen())"
+                class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 hover:border-purple-200 rounded-2xl flex items-center justify-between text-xs text-slate-650 font-bold transition-all duration-200 cursor-pointer"
+              >
+                <span class="truncate">Select a version...</span>
+                <lucide-icon [img]="ChevronDown" [size]="14" [class]="'text-slate-400 transition-transform duration-300 ' + (isDropdownOpen() ? 'transform rotate-180 text-purple-500' : '')"></lucide-icon>
+              </button>
+              
+              <ng-container *ngIf="isDropdownOpen()">
+                <div class="fixed inset-0 z-40" (click)="isDropdownOpen.set(false)"></div>
+                <div class="absolute left-0 right-0 mt-1.5 bg-white dark:bg-[#100818] dark:text-gray-100 border border-purple-100 rounded-2xl shadow-xl z-50 max-h-48 overflow-y-auto p-1.5 space-y-1 animate-in fade-in slide-in-from-top-1 duration-150">
+                  <button *ngFor="let r of resumes()" (click)="selectedResumeId.set(r.id); isDropdownOpen.set(false)" type="button"
+                    [class]="'w-full px-3 py-2 text-left text-xs font-semibold rounded-xl transition-all flex items-center justify-between cursor-pointer ' + (r.id === selectedResumeId() ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300' : 'text-slate-655 hover:bg-purple-50 dark:bg-purple-900/20 hover:text-purple-600 dark:text-purple-400')">
+                    <span class="truncate">{{ r.filename }}</span>
+                    <lucide-icon *ngIf="r.id === selectedResumeId()" [img]="Check" [size]="12" class="text-purple-650 shrink-0"></lucide-icon>
+                  </button>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="mt-8 flex items-center justify-between">
+            <button 
+              (click)="navigateTo('/interview/' + selectedResumeId())"
+              class="px-6 py-3.5 bg-black text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-lg hover:bg-slate-900 active:scale-95 btn-interactive flex items-center gap-2 shrink-0 cursor-pointer"
+            >
+              <lucide-icon [img]="Zap" [size]="14" class="text-white"></lucide-icon>
+              Start task
+            </button>
+            <div class="text-slate-400 text-xs font-semibold flex items-center gap-1.5 pr-1">
+              <lucide-icon [img]="BookOpen" [size]="14"></lucide-icon> 20-30 min
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fixed bottom-8 left-0 right-0 px-6 flex justify-center z-40">
+    <button 
+      (click)="navigateTo('/profile')"
+      class="px-6 py-3.5 bg-white/95 dark:bg-[#100818]/95 backdrop-blur-lg text-slate-800 dark:text-slate-200 text-[10px] font-black uppercase tracking-wider rounded-full shadow-2xl border border-white/80 hover:bg-white dark:bg-[#100818] dark:text-gray-100 active:scale-95 btn-interactive flex items-center gap-2"
+    >
+      <lucide-icon [img]="User" [size]="12" class="text-purple-600 dark:text-purple-400"></lucide-icon>
+      Set Target Career Profile
+    </button>
+  </div>
+</div>

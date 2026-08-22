@@ -1,0 +1,32 @@
+spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  application:
+    name: ResumeFlow
+  datasource:
+    url: jdbc:postgresql://localhost:5433/ResumeFlow
+    username: postgres
+    password: 1234567890
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8081
+
+app:
+  jwt:
+    secret: supersecret123supersecret123supersecret123supersecret123supersecret123
+    expiration: 86400000 # 24 hours
+  affinda:
+    api-key: aff_96d19ecb5927e826de37e2a1b7b11125660f4c92
+    workspace-id: lHljXswf
+    collection-id: VEPBUuFd
+  openrouter:
+    api-key: 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

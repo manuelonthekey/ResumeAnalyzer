@@ -1,0 +1,69 @@
+<div class="min-h-screen bg-transparent flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-white/40 backdrop-blur-md rounded-5xl shadow-2xl p-8 border border-white/40">
+    <div class="flex flex-col items-center mb-8">
+      <div class="w-16 h-16 gradient-header rounded-xl flex items-center justify-center text-white shadow-md mb-4">
+        <lucide-icon [img]="FileText" [size]="32"></lucide-icon>
+      </div>
+      <h2 class="text-3xl font-extrabold text-slate-800 dark:text-slate-200 tracking-tight">Join ResumeFlow</h2>
+      <p class="text-slate-550 text-sm mt-1 font-medium">Get started in seconds</p>
+    </div>
+
+    <div *ngIf="error" class="mb-6 p-4 bg-red-50/90 backdrop-blur-sm border border-red-100 text-red-650 text-sm rounded-2xl text-center font-bold shadow-sm">
+      {{ error }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="space-y-5">
+      <div class="relative">
+        <lucide-icon [img]="User" class="absolute left-4 top-3.5 text-purple-400" [size]="20"></lucide-icon>
+        <input
+          type="text"
+          placeholder="Full name"
+          [(ngModel)]="name"
+          name="name"
+          class="w-full pl-12 pr-4 py-3.5 bg-white/95 dark:bg-[#100818]/95 border border-purple-100/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 transition-all text-slate-800 dark:text-slate-200 font-medium shadow-sm"
+          required
+        />
+      </div>
+
+      <div class="relative">
+        <lucide-icon [img]="Mail" class="absolute left-4 top-3.5 text-purple-400" [size]="20"></lucide-icon>
+        <input
+          type="email"
+          placeholder="Email address"
+          [(ngModel)]="email"
+          name="email"
+          class="w-full pl-12 pr-4 py-3.5 bg-white/95 dark:bg-[#100818]/95 border border-purple-100/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 transition-all text-slate-800 dark:text-slate-200 font-medium shadow-sm"
+          required
+        />
+      </div>
+
+      <div class="relative">
+        <lucide-icon [img]="Lock" class="absolute left-4 top-3.5 text-purple-400" [size]="20"></lucide-icon>
+        <input
+          type="password"
+          placeholder="Password"
+          [(ngModel)]="password"
+          name="password"
+          class="w-full pl-12 pr-4 py-3.5 bg-white/95 dark:bg-[#100818]/95 border border-purple-100/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 transition-all text-slate-800 dark:text-slate-200 font-medium shadow-sm"
+          required
+        />
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="w-full gradient-header text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 btn-interactive cursor-pointer"
+      >
+        {{ loading ? 'Creating account...' : 'Create Account' }}
+        <lucide-icon [img]="ArrowRight" [size]="18"></lucide-icon>
+      </button>
+    </form>
+
+    <div class="mt-8 text-center text-sm text-slate-500 dark:text-slate-400 font-medium">
+      Already have an account? 
+      <a routerLink="/login" class="text-purple-600 dark:text-purple-400 font-extrabold hover:underline">
+        Log In here
+      </a>
+    </div>
+  </div>
+</div>

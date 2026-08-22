@@ -1,0 +1,85 @@
+<div class="min-h-screen bg-transparent pb-12">
+  <div class="fixed top-0 left-0 right-0 z-50 frosted-header rounded-b-[36px] px-8 py-5 shadow-sm">
+    <div class="w-full flex items-center gap-4">
+      <button 
+        (click)="goBack()" 
+        class="p-3 bg-white dark:bg-[#100818] dark:text-gray-100 hover:bg-violet-50 border border-violet-100 rounded-2xl transition-all text-violet-600 flex items-center justify-center btn-interactive shadow-sm"
+      >
+        <lucide-icon [img]="ArrowLeft" [size]="20"></lucide-icon>
+      </button>
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight text-white">Upload Resume</h1>
+        <p class="text-purple-200 text-sm mt-0.5">We support PDF files up to 10MB</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-xl mx-auto px-4 mt-28">
+    <div class="glass-card rounded-2xl p-8 shadow-md border border-white/60">
+      
+      <div
+        (dragover)="handleDragOver($event)"
+        (dragleave)="handleDragLeave($event)"
+        (drop)="handleDrop($event)"
+        [class]="'border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center transition-all ' + 
+          (dragging() ? 'border-primary-400 bg-primary-50/50' : 
+            (file() ? 'border-emerald-300 bg-emerald-50/10' : 'border-primary-200 hover:border-primary-300 bg-gray-50/30'))"
+      >
+        <input
+          type="file"
+          id="resume-file"
+          accept=".pdf"
+          class="hidden"
+          (change)="handleFileChange($event)"
+          [disabled]="loading()"
+        />
+        
+        <div *ngIf="file(); else emptyState" class="flex flex-col items-center">
+          <div class="p-4 bg-emerald-100 text-emerald-500 rounded-xl mb-4">
+            <lucide-icon [img]="FileText" [size]="40"></lucide-icon>
+          </div>
+          <h4 class="font-bold text-gray-800 dark:text-gray-200 text-lg text-center max-w-[280px] truncate">{{ file()?.name }}</h4>
+          <p class="text-gray-400 text-sm mt-1">{{ (file()!.size / 1024 / 1024).toFixed(2) }} MB</p>
+          
+          <button
+            (click)="clearFile()"
+            class="mt-4 text-xs font-semibold text-primary-500 hover:underline"
+            [disabled]="loading()"
+          >
+            Change File
+          </button>
+        </div>
+        
+        <ng-template #emptyState>
+          <label for="resume-file" class="cursor-pointer flex flex-col items-center w-full">
+            <div class="p-4 bg-primary-100 text-primary-500 rounded-xl mb-4 transition-transform hover:scale-105">
+              <lucide-icon [img]="Upload" [size]="40"></lucide-icon>
+            </div>
+            <h4 class="font-bold text-gray-700 dark:text-gray-300 text-lg">Drag & Drop Resume</h4>
+            <p class="text-gray-400 text-sm mt-1">or click to browse from files</p>
+          </label>
+        </ng-template>
+      </div>
+
+      <div *ngIf="error()" class="mt-6 p-4 bg-red-50 border border-red-100 text-red-600 text-sm rounded-2xl text-center font-semibold">
+        {{ error() }}
+      </div>
+
+      <button
+        *ngIf="file()"
+        (click)="handleUpload()"
+        [disabled]="loading()"
+        class="w-full mt-6 gradient-header text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 btn-interactive"
+      >
+        <ng-container *ngIf="loading(); else btnText">
+          <lucide-icon [img]="Loader" class="animate-spin" [size]="18"></lucide-icon>
+          Parsing resume structure with AI...
+        </ng-container>
+        <ng-template #btnText>
+          Process Resume
+        </ng-template>
+      </button>
+
+    </div>
+  </div>
+</div>

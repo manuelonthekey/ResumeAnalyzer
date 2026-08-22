@@ -1,0 +1,152 @@
+<div *ngIf="isLoading()" class="min-h-screen bg-transparent flex items-center justify-center">
+  <lucide-icon [img]="Loader" class="animate-spin text-primary-500" [size]="32"></lucide-icon>
+</div>
+
+<div *ngIf="!isLoading()" class="min-h-screen bg-transparent pb-12">
+  <div class="fixed top-0 left-0 right-0 z-50 frosted-header rounded-b-[36px] px-8 py-5 shadow-sm">
+    <div class="w-full flex items-center gap-4">
+      <button 
+        (click)="goBack()" 
+        class="p-3 bg-white dark:bg-[#100818] dark:text-gray-100 hover:bg-violet-50 border border-violet-100 rounded-2xl transition-all text-violet-600 flex items-center justify-center btn-interactive shadow-sm"
+      >
+        <lucide-icon [img]="ArrowLeft" [size]="20"></lucide-icon>
+      </button>
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight text-white">My Profile Settings</h1>
+        <p class="text-purple-200 text-sm mt-0.5">Customize your portfolio, preferred roles and socials</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-3xl mx-auto px-4 mt-28">
+    <form (ngSubmit)="onSubmit()" class="space-y-6">
+      
+      <div class="glass-card rounded-2xl p-6 shadow-sm border border-white/60 flex flex-col sm:flex-row items-center gap-6">
+        <div class="relative group shrink-0">
+          <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-white bg-primary-50 flex items-center justify-center shadow-md">
+            <img *ngIf="formData.profile_picture; else noPic" [src]="formData.profile_picture" alt="Avatar" class="w-full h-full object-cover" />
+            <ng-template #noPic>
+              <lucide-icon [img]="User" [size]="48" class="text-primary-300"></lucide-icon>
+            </ng-template>
+          </div>
+          <label class="absolute bottom-0 right-0 p-2 bg-primary-500 text-white rounded-full cursor-pointer hover:bg-primary-600 hover:scale-105 transition-all shadow-md">
+            <lucide-icon [img]="Upload" [size]="16"></lucide-icon>
+            <input type="file" accept="image/*" class="hidden" (change)="handleImageUpload($event)" />
+          </label>
+        </div>
+        <div class="text-center sm:text-left">
+          <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">{{ formData.name || 'User Name' }}</h3>
+          <p class="text-gray-400 text-sm flex items-center gap-1.5 justify-center sm:justify-start mt-1">
+            <lucide-icon [img]="Mail" [size]="14"></lucide-icon> {{ profileEmail }}
+          </p>
+          <p class="text-xs text-primary-500 font-semibold mt-2">Upload PNG or JPG under 2MB</p>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6 shadow-sm border border-white/60 space-y-4">
+        <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 border-b border-gray-100 pb-2 mb-4">Personal Details</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-2 pl-2">Full Name</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                <lucide-icon [img]="User" [size]="16"></lucide-icon>
+              </span>
+              <input
+                type="text"
+                required
+                name="name"
+                [(ngModel)]="formData.name"
+                class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 text-gray-700 dark:text-gray-300 text-sm"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-2 pl-2">Preferred Job Roles</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                <lucide-icon [img]="Briefcase" [size]="16"></lucide-icon>
+              </span>
+              <input
+                type="text"
+                name="preferred_roles"
+                placeholder="e.g. Frontend Engineer, Product Manager"
+                [(ngModel)]="formData.preferred_roles"
+                class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 text-gray-700 dark:text-gray-300 text-sm"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6 shadow-sm border border-white/60 space-y-4">
+        <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 border-b border-gray-100 pb-2 mb-4">Professional Links</h3>
+
+        <div class="space-y-4">
+          <div>
+            <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-2 pl-2">LinkedIn Profile URL</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                <lucide-icon [img]="Linkedin" [size]="16"></lucide-icon>
+              </span>
+              <input
+                type="url"
+                name="linkedin_url"
+                placeholder="https://linkedin.com/in/username"
+                [(ngModel)]="formData.linkedin_url"
+                class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 text-gray-700 dark:text-gray-300 text-sm"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-2 pl-2">GitHub Profile URL</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                <lucide-icon [img]="Github" [size]="16"></lucide-icon>
+              </span>
+              <input
+                type="url"
+                name="github_url"
+                placeholder="https://github.com/username"
+                [(ngModel)]="formData.github_url"
+                class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 text-gray-700 dark:text-gray-300 text-sm"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-2 pl-2">Portfolio/Personal Website URL</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                <lucide-icon [img]="Globe" [size]="16"></lucide-icon>
+              </span>
+              <input
+                type="url"
+                name="portfolio_url"
+                placeholder="https://myportfolio.com"
+                [(ngModel)]="formData.portfolio_url"
+                class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:bg-[#100818] dark:text-gray-100 text-gray-700 dark:text-gray-300 text-sm"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="isSaving()"
+        class="w-full gradient-header text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 btn-interactive"
+      >
+        <ng-container *ngIf="isSaving(); else saveBtn">
+          <lucide-icon [img]="Loader" class="animate-spin" [size]="18"></lucide-icon> Saving Changes...
+        </ng-container>
+        <ng-template #saveBtn>
+          <lucide-icon [img]="Check" [size]="18"></lucide-icon> Save Settings
+        </ng-template>
+      </button>
+    </form>
+  </div>
+</div>
