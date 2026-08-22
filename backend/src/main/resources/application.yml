@@ -3,9 +3,6 @@ spring:
     property-naming-strategy: SNAKE_CASE
   application:
     name: ResumeFlow
-  datasource:
-    url: ${DATABASE_URL}
-    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
