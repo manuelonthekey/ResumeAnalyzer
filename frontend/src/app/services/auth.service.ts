@@ -57,7 +57,15 @@ export class AuthService {
 
   register(userData: any) {
     return this.http.post<any>(`${this.apiUrl}/register`, userData).pipe(
-      tap(() => this.login({ email: userData.email, password: userData.password }))
+      tap(res => {
+        const userObj = { id: res.id, email: res.email, name: res.name };
+        this.user.set(userObj);
+        this.token.set(res.token);
+        this.isAuthenticated.set(true);
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('user', JSON.stringify(userObj));
+        this.router.navigate(['/dashboard']);
+      })
     );
   }
 
