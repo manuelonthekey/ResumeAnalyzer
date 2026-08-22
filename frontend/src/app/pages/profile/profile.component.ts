@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -38,7 +39,7 @@ export class ProfileComponent implements OnInit {
   profileEmail = '';
 
   ngOnInit() {
-    this.http.get<any>('http://localhost:8081/api/v1/profile').subscribe({
+    this.http.get<any>(`${environment.apiUrl}/profile`).subscribe({
       next: (data) => {
         this.profileEmail = data.email || '';
         this.formData = {
@@ -73,7 +74,7 @@ export class ProfileComponent implements OnInit {
 
   onSubmit() {
     this.isSaving.set(true);
-    this.http.put<any>('http://localhost:8081/api/v1/profile', this.formData).subscribe({
+    this.http.put<any>(`${environment.apiUrl}/profile`, this.formData).subscribe({
       next: (res) => {
         this.authService.user.set(res.user);
         alert('Profile updated successfully!');

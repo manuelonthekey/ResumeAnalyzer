@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -60,7 +61,7 @@ export class AnalysisComponent implements OnInit {
   fetchData() {
     this.resumeLoading.set(true);
     
-    this.http.get<any>(`http://localhost:8081/api/v1/resumes/${this.id}`).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/resumes/${this.id}`).subscribe({
       next: (data) => {
         this.resume.set(data);
         this.resumeLoading.set(false);
@@ -72,7 +73,7 @@ export class AnalysisComponent implements OnInit {
   }
 
   fetchAnalyses() {
-    this.http.get<any[]>(`http://localhost:8081/api/v1/analysis/${this.id}`).subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/analysis/${this.id}`).subscribe({
       next: (data) => this.analyses.set(data),
       error: () => {}
     });
@@ -82,7 +83,7 @@ export class AnalysisComponent implements OnInit {
     this.analyzeLoading.set(true);
     this.analyzeError.set('');
 
-    this.http.post<any>('http://localhost:8081/api/v1/analysis/analyze', {
+    this.http.post<any>(`${environment.apiUrl}/analysis/analyze`, {
       resume_id: this.id,
       jd_text: this.jdText()
     }).subscribe({

@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -67,7 +68,7 @@ export class UploadComponent {
     const formData = new FormData();
     formData.append('file', currentFile);
 
-    this.http.post<any>('http://localhost:8081/api/v1/resumes/upload', formData).subscribe({
+    this.http.post<any>(`${environment.apiUrl}/resumes/upload`, formData).subscribe({
       next: (res) => {
         this.router.navigate([`/analysis/${res.resume_id}`]);
       },

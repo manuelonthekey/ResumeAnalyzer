@@ -1,3 +1,4 @@
+import { environment } from '../../environments/environment';
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -16,7 +17,7 @@ export interface User {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8081/api/v1/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
   
   // Using Angular 16+ Signals for global state
   public user = signal<User | null>(null);

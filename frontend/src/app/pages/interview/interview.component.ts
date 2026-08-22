@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -98,14 +99,14 @@ export class InterviewComponent implements OnInit, OnDestroy {
   }
 
   fetchHistory() {
-    this.http.get<any[]>('http://localhost:8081/api/v1/interview/sessions').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/interview/sessions`).subscribe({
       next: (data) => this.interviewHistory.set(data),
       error: () => {}
     });
   }
 
   fetchSessionDetails(sid: string) {
-    this.http.get<any>(`http://localhost:8081/api/v1/interviews/${sid}`).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/interviews/${sid}`).subscribe({
       next: (data) => {
         this.sessionDetails.set(data);
         this.sessionEnded.set(true);
@@ -131,7 +132,7 @@ export class InterviewComponent implements OnInit, OnDestroy {
 
   handleStartSession() {
     this.loadingQuestion.set(true);
-    this.http.post<any>('http://localhost:8081/api/v1/interviews/start', {
+    this.http.post<any>(`${environment.apiUrl}/interviews/start`, {
       resume_id: this.id,
       session_type: this.sessionType()
     }).subscribe({
@@ -153,7 +154,7 @@ export class InterviewComponent implements OnInit, OnDestroy {
   handleSubmitAnswer() {
     if (!this.userAnswer().trim()) return;
     this.loadingFeedback.set(true);
-    this.http.post<any>(`http://localhost:8081/api/v1/interviews/${this.sessionId()}/answer`, {
+    this.http.post<any>(`${environment.apiUrl}/interviews/${this.sessionId()}/answer`, {
       question_number: this.questionNumber(),
       question_text: this.currentQuestion(),
       answer: this.userAnswer()
@@ -184,7 +185,7 @@ export class InterviewComponent implements OnInit, OnDestroy {
 
   handleEndSession() {
     this.loadingQuestion.set(true);
-    this.http.post<any>(`http://localhost:8081/api/v1/interviews/${this.sessionId()}/end`, {}).subscribe({
+    this.http.post<any>(`${environment.apiUrl}/interviews/${this.sessionId()}/end`, {}).subscribe({
       next: () => {
         if (this.sessionId()) this.fetchSessionDetails(this.sessionId()!);
         this.loadingQuestion.set(false);

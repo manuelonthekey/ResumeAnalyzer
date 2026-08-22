@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -38,7 +39,7 @@ export class DashboardComponent implements OnInit {
   fetchData() {
     this.resumesLoading.set(true);
     // Use proper Spring API paths when they are built
-    this.http.get<any[]>('http://localhost:8081/api/v1/resumes').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/resumes`).subscribe({
       next: (data) => {
         this.resumes.set(data);
         if (data.length > 0 && !this.selectedResumeId()) {
@@ -49,12 +50,12 @@ export class DashboardComponent implements OnInit {
       error: () => this.resumesLoading.set(false)
     });
 
-    this.http.get<any>('http://localhost:8081/api/v1/feedback/summary').subscribe({
+    this.http.get<any>(`${environment.apiUrl}/feedback/summary`).subscribe({
       next: (data) => this.feedbackSummary.set(data),
       error: () => {}
     });
 
-    this.http.get<any[]>('http://localhost:8081/api/v1/interviews/history').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/interviews/history`).subscribe({
       next: (data) => this.interviewHistory.set(data),
       error: () => {}
     });
@@ -63,7 +64,7 @@ export class DashboardComponent implements OnInit {
   handleDeleteResume(event: Event, id: string, filename: string) {
     event.stopPropagation();
     if (confirm(`Are you sure you want to delete "${filename}"? All associated analyses and interview sessions will be permanently lost.`)) {
-      this.http.delete(`http://localhost:8081/api/v1/resumes/${id}`).subscribe({
+      this.http.delete(`${environment.apiUrl}/resumes/${id}`).subscribe({
         next: () => {
           this.fetchData();
           this.selectedResumeId.set('');
