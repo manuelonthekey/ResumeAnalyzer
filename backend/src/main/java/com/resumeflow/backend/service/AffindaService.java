@@ -38,7 +38,10 @@ public class AffindaService {
                 return file.getOriginalFilename() != null ? file.getOriginalFilename() : "resume.pdf";
             }
         });
-        body.add("collection", affindaCollectionId);
+        
+        if (affindaCollectionId != null && !affindaCollectionId.trim().isEmpty() && !affindaCollectionId.equals("dummy_collection")) {
+            body.add("collection", affindaCollectionId.trim());
+        }
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
