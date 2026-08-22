@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:8081/api/v1'
+  apiUrl: 'https://cvpitch.onrender.com/api/v1'
 };
