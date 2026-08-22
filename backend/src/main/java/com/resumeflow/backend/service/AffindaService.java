@@ -22,6 +22,9 @@ public class AffindaService {
     @Value("${app.affinda.collection-id:dummy_collection}")
     private String affindaCollectionId;
 
+    @Value("${app.affinda.workspace-id:dummy_workspace}")
+    private String affindaWorkspaceId;
+
     private final String AFFINDA_BASE_URL = "https://api.affinda.com/v3";
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -41,6 +44,10 @@ public class AffindaService {
         
         if (affindaCollectionId != null && !affindaCollectionId.trim().isEmpty() && !affindaCollectionId.equals("dummy_collection")) {
             body.add("collection", affindaCollectionId.trim());
+        }
+
+        if (affindaWorkspaceId != null && !affindaWorkspaceId.trim().isEmpty() && !affindaWorkspaceId.equals("dummy_workspace")) {
+            body.add("workspace", affindaWorkspaceId.trim());
         }
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
