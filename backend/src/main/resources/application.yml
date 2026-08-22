@@ -17,11 +17,11 @@ server:
 
 app:
   jwt:
-    secret: ${JWT_SECRET}
+    secret: ${JWT_SECRET:dummy_secret}
     expiration: 86400000 # 24 hours
   affinda:
-    api-key: ${AFFINDA_API_KEY}
-    workspace-id: ${AFFINDA_WORKSPACE_ID}
-    collection-id: ${AFFINDA_COLLECTION_ID}
+    api-key: ${AFFINDA_API_KEY:dummy_key}
+    workspace-id: ${AFFINDA_WORKSPACE_ID:dummy_workspace}
+    collection-id: ${AFFINDA_COLLECTION_ID:dummy_collection}
   openrouter:
-    api-key: ${OPENROUTER_API_KEY}
+    api-key: ${OPENROUTER_API_KEY:dummy_key}
