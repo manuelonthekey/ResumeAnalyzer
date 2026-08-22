@@ -59,6 +59,10 @@ public class AffindaService {
                     requestEntity,
                     Map.class
             );
+        } catch (org.springframework.web.client.HttpStatusCodeException e) {
+            String body = e.getResponseBodyAsString();
+            System.err.println("Affinda Error Body: " + body);
+            throw new Exception("Affinda upload failed with status " + e.getStatusCode() + ": " + body, e);
         } catch (Exception e) {
             throw new Exception("Affinda upload failed: " + e.getMessage(), e);
         }
