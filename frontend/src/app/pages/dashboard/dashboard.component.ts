@@ -4,12 +4,13 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
-import { LucideAngularModule, FileText, Plus, LogOut, Trash2, ChevronDown, User, Check, Zap, BookOpen, ChevronRight } from 'lucide-angular';
+import { LucideAngularModule, FileText, Plus, LogOut, Trash2, ChevronDown, User, Check, Zap, BookOpen, ChevronRight, Award } from 'lucide-angular';
+import { LegalModalComponent } from '../../components/legal-modal/legal-modal.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, LegalModalComponent],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
@@ -27,18 +28,33 @@ export class DashboardComponent implements OnInit {
   showScoresDropdown = signal(false);
   isDropdownOpen = signal(false);
 
+  legalOpen = false;
+  legalType: 'terms' | 'privacy' = 'terms';
+
   // Icons
-  FileText = FileText; Plus = Plus; LogOut = LogOut; Trash2 = Trash2; 
-  ChevronDown = ChevronDown; User = User; Check = Check; Zap = Zap; 
-  BookOpen = BookOpen; ChevronRight = ChevronRight;
+  FileText = FileText;
+  Plus = Plus;
+  LogOut = LogOut;
+  Trash2 = Trash2; 
+  ChevronDown = ChevronDown;
+  User = User;
+  Check = Check;
+  Zap = Zap; 
+  BookOpen = BookOpen;
+  ChevronRight = ChevronRight;
+  Award = Award;
 
   ngOnInit() {
     this.fetchData();
   }
 
+  openLegal(type: 'terms' | 'privacy') {
+    this.legalType = type;
+    this.legalOpen = true;
+  }
+
   fetchData() {
     this.resumesLoading.set(true);
-    // Use proper Spring API paths when they are built
     this.http.get<any[]>(`${environment.apiUrl}/resumes`).subscribe({
       next: (data) => {
         this.resumes.set(data);
