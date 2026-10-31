@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const envConfigFile = `export const environment = {
   production: true,
-  apiUrl: '${process.env.API_URL || 'http://localhost:8081/api/v1'}'
+  apiUrl: '${process.env.API_URL || 'https://cvpitch.onrender.com/api/v1'}'
 };
 `;
 
