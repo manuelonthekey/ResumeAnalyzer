@@ -7,12 +7,16 @@ import { UploadComponent } from './pages/upload/upload.component';
 import { AnalysisComponent } from './pages/analysis/analysis.component';
 import { InterviewComponent } from './pages/interview/interview.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { TermsComponent } from './pages/terms/terms.component';
+import { PrivacyComponent } from './pages/privacy/privacy.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { 
-    path: '', 
+  { path: 'terms', component: TermsComponent },
+  { path: 'privacy', component: PrivacyComponent },
+  {
+    path: '',
     canActivate: [authGuard],
     children: [
       { path: 'dashboard', component: DashboardComponent },

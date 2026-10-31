@@ -1,16 +1,15 @@
 import { environment } from '../../../environments/environment';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
-import { LucideAngularModule, FileText, Plus, LogOut, Trash2, ChevronDown, User, Check, Zap, BookOpen, ChevronRight, Award } from 'lucide-angular';
-import { LegalModalComponent } from '../../components/legal-modal/legal-modal.component';
+import { LucideAngularModule, FileText, Plus, LogOut, Trash2, ChevronDown, User, Check, Zap, BookOpen, ChevronRight } from 'lucide-angular';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, LegalModalComponent],
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
@@ -22,35 +21,25 @@ export class DashboardComponent implements OnInit {
   resumes = signal<any[]>([]);
   feedbackSummary = signal<any>(null);
   interviewHistory = signal<any[]>([]);
-  
+
   resumesLoading = signal(true);
   selectedResumeId = signal('');
   showScoresDropdown = signal(false);
   isDropdownOpen = signal(false);
 
-  legalOpen = false;
-  legalType: 'terms' | 'privacy' = 'terms';
+  // Computed: filename of selected resume for display in dropdown button
+  selectedResumeName = computed<string>(() => {
+    const found = this.resumes().find(r => r.id === this.selectedResumeId());
+    return found?.filename || 'Select a resume...';
+  });
 
   // Icons
-  FileText = FileText;
-  Plus = Plus;
-  LogOut = LogOut;
-  Trash2 = Trash2; 
-  ChevronDown = ChevronDown;
-  User = User;
-  Check = Check;
-  Zap = Zap; 
-  BookOpen = BookOpen;
-  ChevronRight = ChevronRight;
-  Award = Award;
+  FileText = FileText; Plus = Plus; LogOut = LogOut; Trash2 = Trash2;
+  ChevronDown = ChevronDown; User = User; Check = Check; Zap = Zap;
+  BookOpen = BookOpen; ChevronRight = ChevronRight;
 
   ngOnInit() {
     this.fetchData();
-  }
-
-  openLegal(type: 'terms' | 'privacy') {
-    this.legalType = type;
-    this.legalOpen = true;
   }
 
   fetchData() {
@@ -79,7 +68,7 @@ export class DashboardComponent implements OnInit {
 
   handleDeleteResume(event: Event, id: string, filename: string) {
     event.stopPropagation();
-    if (confirm(`Are you sure you want to delete "${filename}"? All associated analyses and interview sessions will be permanently lost.`)) {
+    if (confirm(`Delete "${filename}"? All associated analyses and interview sessions will be permanently removed.`)) {
       this.http.delete(`${environment.apiUrl}/resumes/${id}`).subscribe({
         next: () => {
           this.fetchData();

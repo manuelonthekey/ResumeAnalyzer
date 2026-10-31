@@ -1,302 +1,265 @@
-<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
-  <!-- Top Navigation Header -->
-  <header class="sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center gap-3.5">
-      <button 
-        (click)="goBack()" 
-        class="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors text-slate-700 dark:text-slate-300 flex items-center justify-center cursor-pointer"
-        title="Back to Dashboard"
-      >
+<div class="min-h-screen bg-surface-50 dark:bg-surface-950 pb-12">
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 app-header px-6 h-14 flex items-center">
+    <div class="flex items-center gap-3 flex-1">
+      <button (click)="goBack()" class="p-1.5 text-surface-400 hover:text-white transition-colors rounded" title="Back">
         <lucide-icon [img]="ArrowLeft" [size]="18"></lucide-icon>
       </button>
-      <div class="min-w-0 flex-1">
-        <h1 class="text-base font-bold text-slate-900 dark:text-slate-100 leading-tight truncate">
+      <div class="min-w-0">
+        <h1 class="text-sm font-semibold text-white truncate max-w-[260px] md:max-w-none">
           {{ resume()?.filename || 'Resume Analysis' }}
         </h1>
-        <p class="text-xs text-slate-500 dark:text-slate-400">
-          <ng-container *ngIf="resume()">Uploaded on {{ resume()?.uploaded_at | date }}</ng-container>
-          <ng-container *ngIf="!resume()">Loading resume data...</ng-container>
+        <p class="text-xs text-surface-400">
+          <ng-container *ngIf="resume()">Uploaded {{ resume()?.uploaded_at | date }}</ng-container>
+          <ng-container *ngIf="!resume()">Loading...</ng-container>
         </p>
       </div>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8">
-    <!-- Clean Tab Navigation -->
-    <div class="flex bg-slate-200/80 dark:bg-slate-900 p-1 rounded-lg mb-8 max-w-sm mx-auto border border-slate-200 dark:border-slate-800">
+  <div class="max-w-4xl mx-auto px-4 pt-22">
+
+    <!-- Tabs -->
+    <div class="flex gap-1 border-b border-surface-200 dark:border-surface-700 mb-6 mt-2">
       <button
         (click)="activeTab.set('structure')"
-        [class]="'flex-1 py-2 text-xs font-semibold rounded-md transition-colors cursor-pointer ' + 
-          (activeTab() === 'structure' ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900')"
+        [class]="'px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ' +
+          (activeTab() === 'structure'
+            ? 'border-accent-600 text-accent-600 dark:text-accent-400 dark:border-accent-400'
+            : 'border-transparent text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200')"
       >
         Parsed Structure
       </button>
       <button
         (click)="activeTab.set('analysis')"
-        [class]="'flex-1 py-2 text-xs font-semibold rounded-md transition-colors cursor-pointer ' + 
-          (activeTab() === 'analysis' ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900')"
+        [class]="'px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ' +
+          (activeTab() === 'analysis'
+            ? 'border-accent-600 text-accent-600 dark:text-accent-400 dark:border-accent-400'
+            : 'border-transparent text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200')"
       >
-        ATS & Review
+        AI Review &amp; ATS
       </button>
     </div>
 
-    <!-- Skeleton Loader State (Tell #28) -->
-    <div *ngIf="resumeLoading()" class="space-y-6">
-      <div class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 space-y-4">
-        <div class="h-5 w-40 rounded skeleton-box"></div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="h-4 w-3/4 rounded skeleton-box"></div>
-          <div class="h-4 w-2/3 rounded skeleton-box"></div>
-          <div class="h-4 w-1/2 rounded skeleton-box"></div>
-          <div class="h-4 w-3/5 rounded skeleton-box"></div>
-        </div>
-      </div>
-      <div class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 space-y-3">
-        <div class="h-5 w-32 rounded skeleton-box"></div>
-        <div class="h-16 w-full rounded skeleton-box"></div>
-      </div>
+    <!-- Loading state -->
+    <div *ngIf="resumeLoading()" class="space-y-4">
+      <div class="skeleton h-32 rounded-lg"></div>
+      <div class="skeleton h-48 rounded-lg"></div>
+      <div class="skeleton h-40 rounded-lg opacity-70"></div>
     </div>
 
     <div *ngIf="!resumeLoading()">
+
       <!-- TAB 1: Structure -->
-      <div *ngIf="activeTab() === 'structure'" class="space-y-6">
-        
-        <!-- Personal Information -->
-        <div class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <h3 class="text-base font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
-            <lucide-icon [img]="Star" class="text-blue-600 dark:text-blue-400" [size]="18"></lucide-icon>
+      <div *ngIf="activeTab() === 'structure'" class="space-y-4">
+
+        <!-- Personal Info -->
+        <div class="surface-card rounded-lg p-5 shadow-card border border-surface-200 dark:border-surface-700">
+          <h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100 mb-3 flex items-center gap-2">
+            <lucide-icon [img]="User" class="text-surface-400" [size]="16"></lucide-icon>
             Personal Information
           </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-            <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-100 dark:border-slate-800">
-              <span class="text-xs text-slate-400 block mb-0.5">Full Name</span>
-              <span class="font-medium text-slate-800 dark:text-slate-200">{{ parsed().personal?.name || 'Not specified' }}</span>
-            </div>
-            <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-100 dark:border-slate-800">
-              <span class="text-xs text-slate-400 block mb-0.5">Email</span>
-              <span class="font-medium text-slate-800 dark:text-slate-200">{{ parsed().personal?.email || 'Not specified' }}</span>
-            </div>
-            <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-100 dark:border-slate-800">
-              <span class="text-xs text-slate-400 block mb-0.5">Phone</span>
-              <span class="font-medium text-slate-800 dark:text-slate-200">{{ parsed().personal?.phone || 'Not specified' }}</span>
-            </div>
-            <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-100 dark:border-slate-800">
-              <span class="text-xs text-slate-400 block mb-0.5">Location</span>
-              <span class="font-medium text-slate-800 dark:text-slate-200">{{ parsed().personal?.location || 'Not specified' }}</span>
-            </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            <div><span class="text-surface-400">Name:</span> <span class="font-medium text-surface-700 dark:text-surface-300 ml-1">{{ parsed().personal?.name }}</span></div>
+            <div><span class="text-surface-400">Email:</span> <span class="font-medium text-surface-700 dark:text-surface-300 ml-1">{{ parsed().personal?.email }}</span></div>
+            <div><span class="text-surface-400">Phone:</span> <span class="font-medium text-surface-700 dark:text-surface-300 ml-1">{{ parsed().personal?.phone }}</span></div>
+            <div><span class="text-surface-400">Location:</span> <span class="font-medium text-surface-700 dark:text-surface-300 ml-1">{{ parsed().personal?.location }}</span></div>
           </div>
         </div>
 
-        <!-- Education (Removed Tell #17 colored left stripe) -->
-        <div class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <h3 class="text-base font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
-            <lucide-icon [img]="BookOpen" class="text-blue-600 dark:text-blue-400" [size]="18"></lucide-icon>
+        <!-- Education -->
+        <div class="surface-card rounded-lg p-5 shadow-card border border-surface-200 dark:border-surface-700">
+          <h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100 mb-3 flex items-center gap-2">
+            <lucide-icon [img]="BookOpen" class="text-surface-400" [size]="16"></lucide-icon>
             Education
           </h3>
-          <div *ngIf="parsed().education?.length > 0; else noEdu" class="space-y-3">
-            <div *ngFor="let edu of parsed().education" class="p-4 bg-slate-50 dark:bg-slate-950/70 rounded-lg border border-slate-200 dark:border-slate-800">
-              <div class="flex justify-between items-start">
-                <h4 class="font-semibold text-slate-900 dark:text-slate-100 text-sm">
-                  {{ edu.degree }} <span *ngIf="edu.field" class="font-normal text-slate-600 dark:text-slate-400">in {{ edu.field }}</span>
-                </h4>
-                <span *ngIf="edu.year_end" class="text-xs text-slate-400">Class of {{ edu.year_end }}</span>
-              </div>
-              <p class="text-slate-600 dark:text-slate-400 text-xs mt-1">{{ edu.institution }}</p>
-              <p *ngIf="edu.cgpa" class="text-blue-600 dark:text-blue-400 text-xs font-medium mt-1">Score: {{ edu.cgpa }}</p>
+          <div *ngIf="parsed().education?.length > 0; else noEdu" class="space-y-4">
+            <div *ngFor="let edu of parsed().education; let last = last"
+              [class]="'pb-4 ' + (last ? '' : 'border-b border-surface-100 dark:border-surface-700')">
+              <div class="font-medium text-surface-800 dark:text-surface-200 text-sm">{{ edu.degree }}<span *ngIf="edu.field"> in {{ edu.field }}</span></div>
+              <div class="text-surface-500 text-xs mt-0.5">{{ edu.institution }}<span *ngIf="edu.year_end"> · Class of {{ edu.year_end }}</span></div>
+              <div *ngIf="edu.cgpa" class="text-xs text-accent-600 dark:text-accent-400 mt-1">Score: {{ edu.cgpa }}</div>
             </div>
           </div>
-          <ng-template #noEdu><p class="text-slate-400 text-sm">No education records found in resume.</p></ng-template>
+          <ng-template #noEdu><p class="text-surface-400 text-sm">No education data found.</p></ng-template>
         </div>
 
-        <!-- Work Experience (Removed Tell #17 colored left stripe) -->
-        <div class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <h3 class="text-base font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
-            <lucide-icon [img]="Briefcase" class="text-blue-600 dark:text-blue-400" [size]="18"></lucide-icon>
+        <!-- Work Experience -->
+        <div class="surface-card rounded-lg p-5 shadow-card border border-surface-200 dark:border-surface-700">
+          <h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100 mb-3 flex items-center gap-2">
+            <lucide-icon [img]="Briefcase" class="text-surface-400" [size]="16"></lucide-icon>
             Work Experience
           </h3>
-          <div *ngIf="parsed().experience?.length > 0; else noExp" class="space-y-4">
-            <div *ngFor="let exp of parsed().experience" class="p-4 bg-slate-50 dark:bg-slate-950/70 rounded-lg border border-slate-200 dark:border-slate-800">
-              <div class="flex justify-between items-start flex-wrap gap-2">
-                <div>
-                  <h4 class="font-semibold text-slate-900 dark:text-slate-100 text-sm">{{ exp.title }}</h4>
-                  <p class="text-slate-600 dark:text-slate-400 text-xs font-medium">{{ exp.company }}</p>
-                </div>
-                <span class="text-xs bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-0.5 rounded text-[11px] font-medium">
-                  {{ exp.duration_start }} <span *ngIf="exp.duration_end">to {{ exp.duration_end }}</span>
+          <div *ngIf="parsed().experience?.length > 0; else noExp" class="space-y-5">
+            <div *ngFor="let exp of parsed().experience; let last = last"
+              [class]="'pb-4 ' + (last ? '' : 'border-b border-surface-100 dark:border-surface-700')">
+              <div class="flex justify-between items-start flex-wrap gap-1">
+                <div class="font-medium text-surface-800 dark:text-surface-200 text-sm">{{ exp.title }}</div>
+                <span class="text-xs text-surface-500 bg-surface-100 dark:bg-surface-700 px-2 py-0.5 rounded">
+                  {{ exp.duration_start }}<span *ngIf="exp.duration_end"> – {{ exp.duration_end }}</span>
                 </span>
               </div>
-              
-              <div *ngIf="exp.keywords?.length > 0; else noKeywords" class="flex flex-wrap gap-1.5 mt-3">
-                <span *ngFor="let kw of exp.keywords" class="text-xs bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-800">
-                  {{ kw }}
-                </span>
+              <div class="text-xs text-surface-500 mt-0.5">{{ exp.company }}</div>
+              <div *ngIf="exp.keywords?.length > 0; else noKeywords" class="flex flex-wrap gap-1.5 mt-2">
+                <span *ngFor="let kw of exp.keywords"
+                  class="text-xs bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-300 px-2 py-0.5 rounded">{{ kw }}</span>
               </div>
               <ng-template #noKeywords>
-                <p class="text-slate-600 dark:text-slate-400 text-xs mt-2 line-clamp-3 leading-relaxed">{{ exp.description }}</p>
+                <p class="text-surface-500 text-xs mt-1.5 line-clamp-3">{{ exp.description }}</p>
               </ng-template>
             </div>
           </div>
-          <ng-template #noExp><p class="text-slate-400 text-sm">No work experience entries found.</p></ng-template>
+          <ng-template #noExp><p class="text-surface-400 text-sm">No work experience found.</p></ng-template>
         </div>
 
         <!-- Skills -->
-        <div class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <h3 class="text-base font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
-            <lucide-icon [img]="Code" class="text-blue-600 dark:text-blue-400" [size]="18"></lucide-icon>
-            Skills & Competencies
+        <div class="surface-card rounded-lg p-5 shadow-card border border-surface-200 dark:border-surface-700">
+          <h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100 mb-3 flex items-center gap-2">
+            <lucide-icon [img]="Code" class="text-surface-400" [size]="16"></lucide-icon>
+            Skills
           </h3>
-          
           <div *ngIf="displaySkills().length > 0 || (parsed().skills?.experience_keywords?.length > 0); else noSkills">
             <div *ngIf="displaySkills().length > 0" class="space-y-4">
-              <div class="flex flex-wrap gap-2">
-                <span *ngFor="let skill of displaySkills()" class="bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-md text-xs font-medium text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+              <div class="flex flex-wrap gap-1.5">
+                <span *ngFor="let skill of displaySkills()"
+                  class="text-xs bg-surface-100 dark:bg-surface-700 px-3 py-1 rounded text-surface-700 dark:text-surface-300 font-medium">
                   {{ skill }}
                 </span>
               </div>
-              
-              <div *ngIf="parsed().skills?.experience_keywords?.length > 0" class="pt-4 border-t border-slate-100 dark:border-slate-800">
-                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Keywords Extracted from Experience</p>
+              <div *ngIf="parsed().skills?.experience_keywords?.length > 0">
+                <p class="text-[10px] font-semibold text-surface-400 uppercase tracking-wider mb-1.5">From Experience</p>
                 <div class="flex flex-wrap gap-1.5">
-                  <span *ngFor="let kw of parsed().skills.experience_keywords.slice(0, 25)" class="text-xs bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded border border-blue-200 dark:border-blue-900">{{ kw }}</span>
+                  <span *ngFor="let kw of parsed().skills.experience_keywords.slice(0, 25)"
+                    class="text-xs bg-accent-50 dark:bg-accent-900/20 text-accent-700 dark:text-accent-300 px-2 py-0.5 rounded">{{ kw }}</span>
                 </div>
               </div>
-
-              <div *ngIf="parsed().skills?.project_keywords?.length > 0" class="pt-3">
-                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Keywords Extracted from Projects</p>
+              <div *ngIf="parsed().skills?.project_keywords?.length > 0">
+                <p class="text-[10px] font-semibold text-surface-400 uppercase tracking-wider mb-1.5">From Projects</p>
                 <div class="flex flex-wrap gap-1.5">
-                  <span *ngFor="let kw of parsed().skills.project_keywords.slice(0, 20)" class="text-xs bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-900">{{ kw }}</span>
+                  <span *ngFor="let kw of parsed().skills.project_keywords.slice(0, 20)"
+                    class="text-xs bg-success-50 dark:bg-success-500/10 text-success-700 dark:text-success-400 px-2 py-0.5 rounded">{{ kw }}</span>
                 </div>
               </div>
             </div>
           </div>
           <ng-template #noSkills>
-            <p class="text-slate-400 text-sm">No skills extracted from resume.</p>
+            <p class="text-surface-400 text-sm">No skills extracted. Run AI Review to identify key skills.</p>
           </ng-template>
         </div>
       </div>
 
       <!-- TAB 2: Analysis -->
-      <div *ngIf="activeTab() === 'analysis'" class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-        
-        <!-- Job Description Input -->
+      <div *ngIf="activeTab() === 'analysis'" class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+        <!-- JD input -->
         <div class="lg:col-span-1">
-          <div class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
-            <h3 class="text-base font-bold text-slate-900 dark:text-slate-100 mb-1">Target Job Description</h3>
-            <p class="text-slate-500 text-xs mb-4">Paste the job ad below to evaluate ATS match and extract missing keywords.</p>
-            
+          <div class="surface-card rounded-lg p-5 shadow-card border border-surface-200 dark:border-surface-700">
+            <h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100 mb-1">Target Job Description</h3>
+            <p class="text-xs text-surface-400 mb-3">Paste the job posting to get an ATS match score and keyword gaps.</p>
+
             <textarea
               rows="12"
               [ngModel]="jdText()"
               (ngModelChange)="jdText.set($event)"
               placeholder="Paste job description here..."
-              class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 dark:text-slate-200 text-xs mb-4 resize-none leading-relaxed"
+              class="w-full p-3 text-sm bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent text-surface-700 dark:text-surface-300 placeholder:text-surface-400 mb-3 resize-none"
             ></textarea>
 
             <button
               (click)="runAnalysis()"
               [disabled]="analyzeLoading()"
-              class="w-full bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 text-xs cursor-pointer shadow-sm"
+              class="w-full btn-primary py-2.5 text-sm font-medium rounded-lg disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              <ng-container *ngIf="analyzeLoading(); else analyzeBtn">
-                <lucide-icon [img]="Loader" class="animate-spin" [size]="14"></lucide-icon>
-                <span>Evaluating ATS match...</span>
-              </ng-container>
-              <ng-template #analyzeBtn>Evaluate ATS Match</ng-template>
+              <lucide-icon *ngIf="analyzeLoading()" [img]="Loader" class="animate-spin" [size]="15"></lucide-icon>
+              {{ analyzeLoading() ? 'Analyzing...' : 'Analyze' }}
             </button>
 
-            <div *ngIf="analyzeError()" class="mt-3 p-3 bg-red-50 dark:bg-red-950/50 text-red-700 dark:text-red-400 rounded-lg text-xs border border-red-200 dark:border-red-900 text-center">
+            <div *ngIf="analyzeError()"
+              class="mt-3 px-3 py-2 bg-danger-50 dark:bg-danger-500/10 text-danger-600 dark:text-danger-400 rounded-lg text-xs border border-danger-100 dark:border-danger-500/20">
               {{ analyzeError() }}
             </div>
           </div>
         </div>
 
-        <!-- Assessment Results -->
-        <div class="lg:col-span-2 space-y-6">
+        <!-- Results -->
+        <div class="lg:col-span-2 space-y-4">
           <div *ngIf="latestAnalysis(); else noAnalysis">
-            
-            <!-- Overall Rating Banner (Removed harsh gradient) -->
-            <div class="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-center gap-6 mb-6">
-              <div class="w-20 h-20 rounded-lg bg-slate-900 dark:bg-blue-600 text-white flex flex-col items-center justify-center shrink-0 border border-slate-700">
-                <span class="text-2xl font-bold">{{ latestAnalysis().overall_rating || 0 }}</span>
-                <span class="text-[10px] text-slate-300">/10 Rating</span>
+
+            <!-- Score header -->
+            <div class="surface-card rounded-lg p-5 shadow-card border border-surface-200 dark:border-surface-700 flex items-center gap-5">
+              <div class="w-20 h-20 rounded-full bg-accent-700 text-white flex flex-col items-center justify-center shrink-0">
+                <span class="text-3xl font-bold leading-none">{{ latestAnalysis().overall_rating || 0 }}</span>
+                <span class="text-[10px] text-white/70 mt-0.5">/10</span>
               </div>
-              <div class="flex-1 text-center sm:text-left">
-                <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">Overall Assessment</h3>
-                <p class="text-slate-600 dark:text-slate-400 text-xs mt-1.5 leading-relaxed">{{ latestAnalysis().summary }}</p>
-                
-                <div *ngIf="analyses()[0]?.ats_score !== null" class="mt-3 inline-flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900 text-emerald-700 dark:text-emerald-300 text-xs font-semibold px-2.5 py-1 rounded">
-                  <lucide-icon [img]="Award" [size]="14"></lucide-icon>
-                  ATS Compatibility: {{ analyses()[0].ats_score }}%
+              <div>
+                <h3 class="text-base font-semibold text-surface-900 dark:text-surface-100">Overall Assessment</h3>
+                <p class="text-sm text-surface-500 dark:text-surface-400 mt-1 leading-relaxed">{{ latestAnalysis().summary }}</p>
+                <div *ngIf="analyses()[0]?.ats_score !== null" class="mt-2">
+                  <span class="text-xs font-semibold text-success-700 dark:text-success-400 bg-success-50 dark:bg-success-500/10 px-3 py-1 rounded border border-success-100 dark:border-success-500/20">
+                    ATS Match: {{ analyses()[0].ats_score }}%
+                  </span>
                 </div>
               </div>
             </div>
 
-            <!-- Strengths and Weaknesses -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              <div class="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
-                <h4 class="font-semibold text-slate-900 dark:text-slate-100 text-sm mb-3 flex items-center gap-2">
-                  <lucide-icon [img]="CheckCircle" class="text-emerald-600" [size]="16"></lucide-icon>
-                  Key Strengths
-                </h4>
-                <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+            <!-- Strengths & Improvements -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="surface-card rounded-lg p-5 shadow-card border border-surface-200 dark:border-surface-700">
+                <h4 class="text-sm font-semibold text-success-700 dark:text-success-400 mb-3">Strengths</h4>
+                <ul class="space-y-1.5 text-sm text-surface-600 dark:text-surface-400">
                   <li *ngFor="let str of latestAnalysis().strengths" class="flex gap-2">
-                    <span class="text-emerald-600 font-bold">•</span>
+                    <span class="text-success-500 mt-0.5 shrink-0">•</span>
                     <span>{{ str }}</span>
                   </li>
                 </ul>
               </div>
 
-              <div class="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
-                <h4 class="font-semibold text-slate-900 dark:text-slate-100 text-sm mb-3 flex items-center gap-2">
-                  <lucide-icon [img]="AlertTriangle" class="text-amber-600" [size]="16"></lucide-icon>
-                  Areas for Improvement
-                </h4>
-                <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+              <div class="surface-card rounded-lg p-5 shadow-card border border-surface-200 dark:border-surface-700">
+                <h4 class="text-sm font-semibold text-warning-600 dark:text-warning-500 mb-3">Areas to Improve</h4>
+                <ul class="space-y-1.5 text-sm text-surface-600 dark:text-surface-400">
                   <li *ngFor="let weak of latestAnalysis().weaknesses" class="flex gap-2">
-                    <span class="text-amber-600 font-bold">•</span>
+                    <span class="text-warning-500 mt-0.5 shrink-0">•</span>
                     <span>{{ weak }}</span>
                   </li>
                 </ul>
               </div>
 
-              <!-- Specific Suggestions -->
-              <div class="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm sm:col-span-2">
-                <h4 class="font-semibold text-slate-900 dark:text-slate-100 text-sm mb-3 flex items-center gap-2">
-                  <lucide-icon [img]="Lightbulb" class="text-blue-600" [size]="16"></lucide-icon>
-                  Targeted Suggestions
-                </h4>
-                <div class="space-y-2.5">
-                  <div *ngFor="let sug of latestAnalysis().suggestions" class="p-3 bg-slate-50 dark:bg-slate-950/70 rounded-lg border border-slate-200 dark:border-slate-800 flex items-start gap-2.5">
-                    <span class="text-[10px] font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/80 px-2 py-0.5 rounded uppercase border border-blue-200 dark:border-blue-900 shrink-0">
+              <!-- Suggestions -->
+              <div class="surface-card rounded-lg p-5 shadow-card border border-surface-200 dark:border-surface-700 md:col-span-2">
+                <h4 class="text-sm font-semibold text-surface-900 dark:text-surface-100 mb-3">Suggestions</h4>
+                <div class="space-y-2">
+                  <div *ngFor="let sug of latestAnalysis().suggestions"
+                    class="p-3 bg-surface-50 dark:bg-surface-800 rounded-lg border border-surface-100 dark:border-surface-700 flex items-start gap-2.5">
+                    <span class="text-[10px] font-semibold text-accent-600 dark:text-accent-400 bg-accent-50 dark:bg-accent-900/20 px-2 py-0.5 rounded uppercase mt-0.5 shrink-0 border border-accent-100 dark:border-accent-800">
                       {{ sug.section }}
                     </span>
-                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{{ sug.suggestion }}</p>
+                    <p class="text-sm text-surface-600 dark:text-surface-400">{{ sug.suggestion }}</p>
                   </div>
                 </div>
               </div>
 
-              <!-- Missing ATS Keywords -->
-              <div *ngIf="latestAnalysis().ats_keywords_missing?.length > 0" class="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm sm:col-span-2">
-                <h4 class="font-semibold text-slate-900 dark:text-slate-100 text-sm mb-3">Missing ATS Keywords</h4>
+              <!-- Missing keywords -->
+              <div *ngIf="latestAnalysis().ats_keywords_missing?.length > 0"
+                class="surface-card rounded-lg p-5 shadow-card border border-surface-200 dark:border-surface-700 md:col-span-2">
+                <h4 class="text-sm font-semibold text-surface-900 dark:text-surface-100 mb-3">Missing ATS Keywords</h4>
                 <div class="flex flex-wrap gap-1.5">
-                  <span *ngFor="let kw of latestAnalysis().ats_keywords_missing" class="bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 px-2.5 py-1 rounded text-xs border border-amber-200 dark:border-amber-900 font-medium">
+                  <span *ngFor="let kw of latestAnalysis().ats_keywords_missing"
+                    class="bg-warning-50 dark:bg-warning-500/10 text-warning-700 dark:text-warning-400 px-2.5 py-1 rounded text-xs font-medium border border-warning-100 dark:border-warning-500/20">
                     {{ kw }}
                   </span>
                 </div>
               </div>
             </div>
           </div>
-          
+
           <ng-template #noAnalysis>
-            <div class="bg-white dark:bg-slate-900 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center text-slate-500 flex flex-col items-center justify-center min-h-[300px]">
-              <lucide-icon [img]="FileText" class="text-slate-300 dark:text-slate-700 mb-3" [size]="36"></lucide-icon>
-              <p class="text-sm font-medium">No job description evaluated yet.</p>
-              <p class="text-xs text-slate-400 mt-1">Paste a job ad on the left and run analysis to calculate your ATS match.</p>
+            <div class="surface-card rounded-lg p-10 border border-dashed border-surface-300 dark:border-surface-600 text-center text-surface-400">
+              <lucide-icon [img]="FileText" class="text-surface-300 dark:text-surface-600 mx-auto mb-3" [size]="36"></lucide-icon>
+              <p class="text-sm">Paste a job description and click <strong>Analyze</strong> to get an AI assessment.</p>
             </div>
           </ng-template>
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </div>

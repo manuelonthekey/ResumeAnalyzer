@@ -1,33 +1,32 @@
-<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
-  <!-- Top Navigation Header -->
-  <header class="sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 py-3.5 flex items-center gap-3.5">
-      <button 
-        (click)="goBack()" 
-        class="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors text-slate-700 dark:text-slate-300 flex items-center justify-center cursor-pointer"
-        title="Back to Dashboard"
+<div class="min-h-screen bg-surface-50 dark:bg-surface-950 pb-12">
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 app-header px-6 h-14 flex items-center">
+    <div class="flex items-center gap-3">
+      <button
+        (click)="goBack()"
+        class="p-1.5 text-surface-400 hover:text-white transition-colors rounded"
+        title="Back"
       >
         <lucide-icon [img]="ArrowLeft" [size]="18"></lucide-icon>
       </button>
       <div>
-        <h1 class="text-base font-bold text-slate-900 dark:text-slate-100 leading-tight">Upload Resume</h1>
-        <p class="text-xs text-slate-500 dark:text-slate-400">PDF documents up to 10MB</p>
+        <h1 class="text-sm font-semibold text-white">Upload Resume</h1>
+        <p class="text-xs text-surface-400">PDF files up to 10 MB</p>
       </div>
     </div>
   </header>
 
-  <!-- Upload Form Container -->
-  <main class="flex-1 max-w-xl w-full mx-auto px-4 py-10">
-    <div class="bg-white dark:bg-slate-900 rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-800">
-      
-      <!-- Drag & Drop Zone -->
+  <div class="max-w-lg mx-auto px-4 pt-24">
+    <div class="surface-card rounded-lg p-6 shadow-card border border-surface-200 dark:border-surface-700">
+
+      <!-- Drop zone -->
       <div
         (dragover)="handleDragOver($event)"
         (dragleave)="handleDragLeave($event)"
         (drop)="handleDrop($event)"
-        [class]="'border-2 border-dashed rounded-lg p-8 sm:p-10 flex flex-col items-center justify-center transition-colors text-center ' + 
-          (dragging() ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-950/20' : 
-            (file() ? 'border-emerald-400 bg-emerald-50/20 dark:bg-emerald-950/20' : 'border-slate-300 dark:border-slate-700 hover:border-slate-400 bg-slate-50/50 dark:bg-slate-950/50'))"
+        [class]="'border-2 border-dashed rounded-lg p-10 flex flex-col items-center justify-center transition-colors ' +
+          (dragging() ? 'border-accent-400 bg-accent-50/30 dark:bg-accent-900/10' :
+            (file() ? 'border-success-500 bg-success-50/20 dark:bg-success-500/5' : 'border-surface-300 dark:border-surface-700 hover:border-surface-400 dark:hover:border-surface-600 bg-surface-50 dark:bg-surface-900/30'))"
       >
         <input
           type="file"
@@ -37,67 +36,51 @@
           (change)="handleFileChange($event)"
           [disabled]="loading()"
         />
-        
-        <!-- File Selected State -->
-        <div *ngIf="file(); else emptyState" class="flex flex-col items-center">
-          <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-lg flex items-center justify-center mb-3">
-            <lucide-icon [img]="FileText" [size]="24"></lucide-icon>
+
+        <!-- File selected state -->
+        <div *ngIf="file(); else emptyState" class="flex flex-col items-center text-center">
+          <div class="p-3 bg-success-50 dark:bg-success-500/10 rounded-lg mb-3">
+            <lucide-icon [img]="FileText" [size]="32" class="text-success-600 dark:text-success-500"></lucide-icon>
           </div>
-          <h4 class="font-semibold text-slate-900 dark:text-slate-100 text-sm max-w-[280px] truncate">{{ file()?.name }}</h4>
-          <p class="text-slate-500 text-xs mt-1">{{ (file()!.size / 1024 / 1024).toFixed(2) }} MB</p>
-          
+          <p class="font-medium text-surface-800 dark:text-surface-200 text-sm max-w-[260px] truncate">{{ file()?.name }}</p>
+          <p class="text-surface-400 text-xs mt-1">{{ (file()!.size / 1024 / 1024).toFixed(2) }} MB</p>
           <button
             (click)="clearFile()"
-            class="mt-3 text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+            class="mt-3 text-xs text-surface-400 hover:text-surface-600 dark:hover:text-surface-300 underline"
             [disabled]="loading()"
           >
-            Choose a different file
+            Remove
           </button>
         </div>
-        
-        <!-- Empty Dropzone State -->
+
         <ng-template #emptyState>
           <label for="resume-file" class="cursor-pointer flex flex-col items-center w-full">
-            <div class="w-12 h-12 bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mb-3">
-              <lucide-icon [img]="Upload" [size]="22"></lucide-icon>
+            <div class="p-3 bg-surface-100 dark:bg-surface-800 rounded-lg mb-3">
+              <lucide-icon [img]="Upload" [size]="28" class="text-surface-400"></lucide-icon>
             </div>
-            <h4 class="font-semibold text-slate-800 dark:text-slate-200 text-sm">Drag & drop your resume PDF</h4>
-            <p class="text-slate-500 text-xs mt-1">or browse files from your computer</p>
+            <p class="font-medium text-surface-700 dark:text-surface-300 text-sm">Drag & drop your resume</p>
+            <p class="text-surface-400 text-xs mt-1">or <span class="text-accent-600 dark:text-accent-400 underline">browse files</span></p>
           </label>
         </ng-template>
       </div>
 
-      <!-- Error Alert -->
-      <div *ngIf="error()" class="mt-4 p-3 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-400 text-xs rounded-lg text-center font-medium">
+      <!-- Error -->
+      <div *ngIf="error()"
+        class="mt-4 px-4 py-3 bg-danger-50 dark:bg-danger-500/10 border border-danger-100 dark:border-danger-500/20 text-danger-600 dark:text-danger-400 text-sm rounded-lg">
         {{ error() }}
       </div>
 
-      <!-- Action Button -->
+      <!-- Submit -->
       <button
         *ngIf="file()"
         (click)="handleUpload()"
         [disabled]="loading()"
-        class="w-full mt-6 bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 text-sm cursor-pointer shadow-sm"
+        class="w-full mt-5 btn-primary py-2.5 text-sm font-medium rounded-lg disabled:opacity-50 flex items-center justify-center gap-2"
       >
-        <ng-container *ngIf="loading(); else btnText">
-          <lucide-icon [img]="Loader" class="animate-spin" [size]="16"></lucide-icon>
-          <span>Parsing resume structure with Affinda...</span>
-        </ng-container>
-        <ng-template #btnText>
-          <span>Upload & Analyze</span>
-        </ng-template>
+        <lucide-icon *ngIf="loading()" [img]="Loader" class="animate-spin" [size]="16"></lucide-icon>
+        {{ loading() ? 'Parsing resume...' : 'Process Resume' }}
       </button>
 
-      <!-- Processing indicator skeleton (Tell #28) -->
-      <div *ngIf="loading()" class="mt-5 p-4 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 space-y-2.5">
-        <div class="flex items-center justify-between text-xs text-slate-500">
-          <span>Extracting experience and skills...</span>
-          <span class="animate-pulse font-medium text-blue-600">Processing</span>
-        </div>
-        <div class="h-1.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-          <div class="h-full bg-blue-600 rounded-full skeleton-box w-3/4"></div>
-        </div>
-      </div>
     </div>
-  </main>
+  </div>
 </div>

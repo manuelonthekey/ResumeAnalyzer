@@ -1,0 +1,62 @@
+<div class="min-h-screen bg-surface-50 dark:bg-surface-950 px-4 py-16">
+  <div class="max-w-2xl mx-auto">
+    <a routerLink="/login" class="inline-flex items-center gap-1.5 text-sm text-surface-400 hover:text-surface-600 dark:hover:text-surface-200 mb-8 transition-colors">
+      <lucide-icon [img]="ArrowLeft" [size]="14"></lucide-icon>
+      Back
+    </a>
+
+    <h1 class="text-2xl font-semibold text-surface-900 dark:text-surface-50 mb-2">Privacy Policy</h1>
+    <p class="text-sm text-surface-400 mb-8">Last updated: November 2026</p>
+
+    <div class="space-y-6 text-sm text-surface-600 dark:text-surface-400 leading-relaxed">
+
+      <section>
+        <h2 class="text-base font-semibold text-surface-800 dark:text-surface-200 mb-2">1. Information We Collect</h2>
+        <p>We collect information you provide directly: your name, email address, password (stored as a cryptographic hash), and resume content you upload. We also collect technical metadata such as IP address and session identifiers for security purposes.</p>
+      </section>
+
+      <section>
+        <h2 class="text-base font-semibold text-surface-800 dark:text-surface-200 mb-2">2. How We Use Your Information</h2>
+        <p>We use your information solely to provide the ResumeFlow service: parsing and analyzing your resume, generating interview questions, and delivering AI-powered feedback. We do not sell or rent your personal data to third parties.</p>
+      </section>
+
+      <section>
+        <h2 class="text-base font-semibold text-surface-800 dark:text-surface-200 mb-2">3. Third-Party Services</h2>
+        <p>ResumeFlow uses the following third-party providers to operate:</p>
+        <ul class="mt-2 space-y-1 list-disc pl-5">
+          <li><strong>Affinda</strong> — Resume parsing and structured data extraction</li>
+          <li><strong>OpenRouter / AI models</strong> — Interview question generation and feedback analysis</li>
+          <li><strong>Neon (PostgreSQL)</strong> — Encrypted database hosting</li>
+          <li><strong>Render</strong> — Application hosting infrastructure</li>
+        </ul>
+        <p class="mt-2">Each provider processes data under their own privacy policies and applicable data processing agreements.</p>
+      </section>
+
+      <section>
+        <h2 class="text-base font-semibold text-surface-800 dark:text-surface-200 mb-2">4. Data Retention</h2>
+        <p>Your account data, resumes, and interview history are retained as long as your account is active. You can delete individual resumes at any time from the dashboard. To request full account deletion, contact us.</p>
+      </section>
+
+      <section>
+        <h2 class="text-base font-semibold text-surface-800 dark:text-surface-200 mb-2">5. Security</h2>
+        <p>Passwords are hashed using BCrypt and never stored in plaintext. All data is transmitted over HTTPS. Access to your data is restricted to authenticated requests using short-lived JWT tokens.</p>
+      </section>
+
+      <section>
+        <h2 class="text-base font-semibold text-surface-800 dark:text-surface-200 mb-2">6. Your Rights</h2>
+        <p>You have the right to access, correct, or delete your personal data. To exercise these rights, contact us at the address below.</p>
+      </section>
+
+      <section>
+        <h2 class="text-base font-semibold text-surface-800 dark:text-surface-200 mb-2">7. Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. We will notify you of material changes by email or a prominent notice in the application.</p>
+      </section>
+
+      <section>
+        <h2 class="text-base font-semibold text-surface-800 dark:text-surface-200 mb-2">8. Contact</h2>
+        <p>For privacy inquiries, contact us at: <span class="text-accent-600 dark:text-accent-400">privacy&#64;resumeflow.app</span></p>
+      </section>
+
+    </div>
+  </div>
+</div>

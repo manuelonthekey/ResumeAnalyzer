@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { LucideAngularModule, ArrowLeft, Award, FileText, CheckCircle, AlertTriangle, Lightbulb, BookOpen, Briefcase, Code, Star, Loader } from 'lucide-angular';
+import { LucideAngularModule, ArrowLeft, FileText, BookOpen, Briefcase, Code, User, Loader } from 'lucide-angular';
 
 @Component({
   selector: 'app-analysis',
@@ -19,9 +19,8 @@ export class AnalysisComponent implements OnInit {
   private http = inject(HttpClient);
 
   // Icons
-  ArrowLeft = ArrowLeft; Award = Award; FileText = FileText; CheckCircle = CheckCircle;
-  AlertTriangle = AlertTriangle; Lightbulb = Lightbulb; BookOpen = BookOpen;
-  Briefcase = Briefcase; Code = Code; Star = Star; Loader = Loader;
+  ArrowLeft = ArrowLeft; FileText = FileText; BookOpen = BookOpen;
+  Briefcase = Briefcase; Code = Code; User = User; Loader = Loader;
 
   id = '';
   activeTab = signal<'structure' | 'analysis'>('structure');
